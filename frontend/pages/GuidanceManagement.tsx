@@ -1,1 +1,5 @@
-// FR1 — instructor guidance authoring
+// Placeholder — implemented in Layer 6
+const GuidanceManagement = () => <div>Loading...</div>
+
+export default GuidanceManagement
+

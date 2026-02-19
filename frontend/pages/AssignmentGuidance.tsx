@@ -1,1 +1,5 @@
-// FR1/FR2 — student view
+// Placeholder — implemented in Layer 6
+const AssignmentGuidance = () => <div>Loading...</div>
+
+export default AssignmentGuidance
+

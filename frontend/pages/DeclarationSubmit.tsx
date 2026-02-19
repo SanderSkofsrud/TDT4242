@@ -1,1 +1,5 @@
-// FR3/FR4 — submission flow
+// Placeholder — implemented in Layer 6
+const DeclarationSubmit = () => <div>Loading...</div>
+
+export default DeclarationSubmit
+

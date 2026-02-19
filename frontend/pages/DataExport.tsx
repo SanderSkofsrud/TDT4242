@@ -1,1 +1,5 @@
-// NFR6 — student data export
+// Placeholder — implemented in Layer 6
+const DataExport = () => <div>Loading...</div>
+
+export default DataExport
+
