@@ -1,0 +1,1 @@
+-- Aggregate view with k=5 suppression

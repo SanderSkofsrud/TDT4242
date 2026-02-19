@@ -1,0 +1,1 @@
+// Current user, role, capabilities

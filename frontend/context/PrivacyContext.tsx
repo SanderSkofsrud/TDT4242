@@ -1,0 +1,1 @@
+// Acknowledgement state, sharing preferences
