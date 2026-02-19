@@ -1,0 +1,36 @@
+# Dependencies — Node/npm
+node_modules/
+
+# TypeScript build output (backend and frontend)
+dist/
+build/
+
+# Vite cache and build (frontend)
+frontend/.vite/
+frontend/dist/
+
+# Environment — local config only; .env.example is committed
+.env
+.env.local
+.env.*.local
+
+# Editor — Cursor/VS Code; .cursorrules is not ignored
+.vscode/
+.cursor/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Docker — local volume data (e.g. PostgreSQL data)
+postgres-data/
+
+# Backend runtime — uploaded policy PDFs (directory preserved via .gitkeep)
+backend/uploads/
+
+# Test coverage
+coverage/
+
+# Logs
+*.log
+npm-debug.log*

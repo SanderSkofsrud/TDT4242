@@ -1,0 +1,14 @@
+{
+  "name": "tdt4242",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev:backend": "npm run dev --prefix backend",
+    "build:frontend": "npm run build --prefix frontend",
+    "build:backend": "npm run build --prefix backend",
+    "build": "npm run build:backend && npm run build:frontend",
+    "start:backend": "npm run start --prefix backend",
+    "lint": "npm run lint --prefix frontend && npm run lint --prefix backend"
+  }
+}
