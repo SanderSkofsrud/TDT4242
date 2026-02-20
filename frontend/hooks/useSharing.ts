@@ -12,30 +12,31 @@ export function useSharingStatus() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
+  const refetch = () => {
+    setIsLoading(true)
+    setError(null)
+    getSharingStatus()
+      .then(setPreferences)
+      .catch(setError)
+      .finally(() => setIsLoading(false))
+  }
+
   useEffect(() => {
     let cancelled = false
     ;(async () => {
       try {
         const data = await getSharingStatus()
-        if (!cancelled) {
-          setPreferences(data)
-        }
+        if (!cancelled) setPreferences(data)
       } catch (err) {
-        if (!cancelled) {
-          setError(err as Error)
-        }
+        if (!cancelled) setError(err as Error)
       } finally {
-        if (!cancelled) {
-          setIsLoading(false)
-        }
+        if (!cancelled) setIsLoading(false)
       }
     })()
-    return () => {
-      cancelled = true
-    }
+    return () => { cancelled = true }
   }, [])
 
-  return { preferences, isLoading, error }
+  return { preferences, isLoading, error, refetch }
 }
 
 export function useRevokeSharing() {

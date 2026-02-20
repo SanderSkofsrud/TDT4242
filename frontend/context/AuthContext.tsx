@@ -6,7 +6,6 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 import type { User } from '../types/models'
 import { login as loginService, acknowledgePrivacyNotice } from '../services/userService'
@@ -29,7 +28,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [token, setTokenState] = useState<string | null>(initialToken)
   const [isLoading, setIsLoading] = useState(false)
-  const navigate = useNavigate()
 
   useEffect(() => {
     // Token is kept in memory only. On full page refresh, the user must log in
@@ -41,12 +39,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     registerUnauthorisedHandler(() => {
+      setUser(null)
       setTokenState(null)
       setAuthToken(null)
-      setUser(null)
-      navigate('/login')
+      initialToken = null
     })
-  }, [navigate])
+  }, [])
 
   const decodeToken = (jwt: string): {
     sub?: string

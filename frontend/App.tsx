@@ -1,16 +1,19 @@
-import { ErrorBoundary } from './components/common/ErrorBoundary'
+import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { PrivacyProvider } from './context/PrivacyContext'
+import { ErrorBoundary } from './components/common/ErrorBoundary'
 import { AppRouter } from './router'
 
 function App() {
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <PrivacyProvider>
-          <AppRouter />
-        </PrivacyProvider>
-      </AuthProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <PrivacyProvider>
+            <AppRouter />
+          </PrivacyProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </ErrorBoundary>
   )
 }
