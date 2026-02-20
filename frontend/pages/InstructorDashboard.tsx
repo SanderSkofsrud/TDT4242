@@ -11,8 +11,8 @@ export default function InstructorDashboard() {
 
   if (!courseId) {
     return (
-      <div className="container">
-        <p className="error">No course specified</p>
+      <div className="container-app py-12">
+        <p className="error-message">No course specified</p>
       </div>
     )
   }
@@ -23,24 +23,26 @@ export default function InstructorDashboard() {
 
   if (error) {
     return (
-      <div className="container">
-        <p className="error">{error.message}</p>
+      <div className="container-app py-12">
+        <p className="error-message">{error.message}</p>
       </div>
     )
   }
 
   if (!data) {
     return (
-      <div className="container">
-        <p>No data available.</p>
+      <div className="container-app py-12">
+        <p className="text-slate-600">No data available.</p>
       </div>
     )
   }
 
   if (data.suppressed) {
     return (
-      <div className="container">
-        <h1>Course dashboard</h1>
+      <div className="container-app py-12 sm:py-16">
+        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-6">
+          Course dashboard
+        </h1>
         <SuppressedNotice />
       </div>
     )
@@ -48,16 +50,20 @@ export default function InstructorDashboard() {
 
   if (!data.data || data.data.length === 0) {
     return (
-      <div className="container">
-        <h1>Course dashboard</h1>
-        <p>No aggregate data for this course yet.</p>
+      <div className="container-app py-12 sm:py-16">
+        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-6">
+          Course dashboard
+        </h1>
+        <p className="text-slate-600">No aggregate data for this course yet.</p>
       </div>
     )
   }
 
   return (
-    <div className="container">
-      <h1>Course dashboard</h1>
+    <div className="container-app py-12 sm:py-16">
+      <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-8">
+        Course dashboard
+      </h1>
       <AggregateTable data={data.data} />
     </div>
   )

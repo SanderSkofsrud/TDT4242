@@ -21,8 +21,8 @@ export default function GuidanceManagement() {
 
   if (!assignmentId) {
     return (
-      <div className="container">
-        <p className="error">No assignment specified</p>
+      <div className="container-app py-12">
+        <p className="error-message">No assignment specified</p>
         <PrivacyBadge />
       </div>
     )
@@ -39,8 +39,8 @@ export default function GuidanceManagement() {
 
   if (error && !guidance) {
     return (
-      <div className="container">
-        <p className="error">{error.message}</p>
+      <div className="container-app py-12">
+        <p className="error-message">{error.message}</p>
         <PrivacyBadge />
       </div>
     )
@@ -49,16 +49,18 @@ export default function GuidanceManagement() {
   const isLocked = guidance?.lockedAt != null
 
   return (
-    <div className="container">
-      <h1>Manage assignment guidance</h1>
+    <div className="container-app py-12 sm:py-16">
+      <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-8">
+        Manage assignment guidance
+      </h1>
       {isLocked && (
-        <p className="card" style={{ background: '#fffbeb', borderColor: '#f59e0b' }}>
+        <div className="suppressed-notice mb-8">
           This guidance is locked and can no longer be edited as the assignment due date has passed.
-        </p>
+        </div>
       )}
       {!isLocked && (
         <>
-          {saveError && <p className="error">{saveError.message}</p>}
+          {saveError && <p className="error-message mb-4">{saveError.message}</p>}
           <GuidanceForm
             initialValues={guidance ?? undefined}
             onSave={handleSave}

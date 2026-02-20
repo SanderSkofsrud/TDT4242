@@ -25,70 +25,81 @@ export default function PrivacyNotice() {
   }
 
   return (
-    <div className="container">
-      <h1>Privacy Notice</h1>
+    <div className="container-app py-12 sm:py-16">
+      <div className="max-w-2xl mx-auto">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-8">
+          Privacy Notice
+        </h1>
 
-      <section style={{ marginBottom: '1.5rem' }}>
-        <h2>What we collect</h2>
-        <p>
-          User ID, course ID, assignment ID, tools used, categories, frequency,
-          optional context you provide, and timestamps.
-        </p>
-      </section>
+        <div className="space-y-8">
+          <section className="card-elevated">
+            <h2 className="text-xl font-bold text-slate-900 mb-2">What we collect</h2>
+            <p className="text-slate-600 leading-relaxed">
+              User ID, course ID, assignment ID, tools used, categories, frequency,
+              optional context you provide, and timestamps.
+            </p>
+          </section>
 
-      <section style={{ marginBottom: '1.5rem' }}>
-        <h2>Purpose</h2>
-        <p>
-          Educational guidance and integrity documentation only. This data is not
-          used for grading or automated decisions.
-        </p>
-      </section>
+          <section className="card-elevated">
+            <h2 className="text-xl font-bold text-slate-900 mb-2">Purpose</h2>
+            <p className="text-slate-600 leading-relaxed">
+              Educational guidance and integrity documentation only. This data is not
+              used for grading or automated decisions.
+            </p>
+          </section>
 
-      <section style={{ marginBottom: '1.5rem' }}>
-        <h2>Retention</h2>
-        <p>
-          183 days from the assignment due date, then hard deleted. No backups
-          are kept after deletion.
-        </p>
-      </section>
+          <section className="card-elevated">
+            <h2 className="text-xl font-bold text-slate-900 mb-2">Retention</h2>
+            <p className="text-slate-600 leading-relaxed">
+              183 days from the assignment due date, then hard deleted. No backups
+              are kept after deletion.
+            </p>
+          </section>
 
-      <section style={{ marginBottom: '1.5rem' }}>
-        <h2>Who has access</h2>
-        <ul style={{ marginLeft: '1.5rem' }}>
-          <li>You: your own data</li>
-          <li>Enrolled instructors: only where sharing is active</li>
-          <li>Head of faculty: aggregates only, no individual data</li>
-          <li>System administrators: infrastructure only, no content access</li>
-        </ul>
-      </section>
+          <section className="card-elevated">
+            <h2 className="text-xl font-bold text-slate-900 mb-2">Who has access</h2>
+            <ul className="list-disc list-inside text-slate-600 space-y-1">
+              <li>You: your own data</li>
+              <li>Enrolled instructors: only where sharing is active</li>
+              <li>Head of faculty: aggregates only, no individual data</li>
+              <li>System administrators: infrastructure only, no content access</li>
+            </ul>
+          </section>
 
-      <section style={{ marginBottom: '1.5rem' }}>
-        <h2>Sharing</h2>
-        <p>
-          Your data is private by default. Instructors of courses you are
-          enrolled in have access unless you revoke it. You can revoke or
-          reinstate access at any time from the sharing settings page.
-        </p>
-      </section>
+          <section className="card-elevated">
+            <h2 className="text-xl font-bold text-slate-900 mb-2">Sharing</h2>
+            <p className="text-slate-600 leading-relaxed">
+              Your data is private by default. Instructors of courses you are
+              enrolled in have access unless you revoke it. You can revoke or
+              reinstate access at any time from the sharing settings page.
+            </p>
+          </section>
 
-      <div style={{ marginTop: '2rem' }}>
-        {error && <p className="error">{error}</p>}
-        <button
-          type="button"
-          onClick={handleAcknowledge}
-          disabled={isAcknowledging}
-        >
-          I understand and agree
-        </button>
-        <p style={{ marginTop: '1rem' }}>
-          <button
-            type="button"
-            onClick={() => logout()}
-            style={{ background: 'none', border: 'none', padding: 0, color: '#0066cc', textDecoration: 'underline', cursor: 'pointer', font: 'inherit' }}
-          >
-            Log out instead
-          </button>
-        </p>
+          <section className="card-elevated mt-10">
+            <h2 className="text-lg font-bold text-slate-900 mb-2">Your choice</h2>
+            <p className="text-slate-600 text-sm mb-6">
+              You must accept to continue using the service. If you do not agree, you can log out.
+            </p>
+            {error && <p className="error-message mb-3">{error}</p>}
+            <div className="flex flex-wrap gap-3 items-center">
+              <button
+                type="button"
+                onClick={handleAcknowledge}
+                disabled={isAcknowledging}
+                className="btn-primary"
+              >
+                I understand and agree
+              </button>
+              <button
+                type="button"
+                onClick={() => logout()}
+                className="btn-secondary"
+              >
+                Log out instead
+              </button>
+            </div>
+          </section>
+        </div>
       </div>
     </div>
   )

@@ -34,33 +34,28 @@ export function ConfirmDialog({
       role="dialog"
       aria-modal="true"
       aria-labelledby="confirm-dialog-title"
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'rgba(0,0,0,0.4)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000,
-      }}
+      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/40"
     >
       <div
-        className="card"
-        style={{ maxWidth: '400px', margin: '1rem' }}
+        className="card-elevated mx-4 max-w-md"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 id="confirm-dialog-title" style={{ marginBottom: '0.5rem' }}>
+        <h2
+          id="confirm-dialog-title"
+          className="text-xl font-bold text-slate-900 mb-2"
+        >
           {title}
         </h2>
-        <p style={{ marginBottom: '1rem' }}>{message}</p>
-        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
-          <button type="button" onClick={onCancel}>
+        <p className="text-slate-600 mb-6">{message}</p>
+        <div className="flex gap-3 justify-end">
+          <button type="button" onClick={onCancel} className="btn-secondary">
             {cancelLabel}
           </button>
           <button
             ref={confirmRef}
             type="button"
             onClick={onConfirm}
+            className="btn-primary"
           >
             {confirmLabel}
           </button>

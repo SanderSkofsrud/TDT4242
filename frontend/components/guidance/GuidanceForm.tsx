@@ -65,67 +65,75 @@ export function GuidanceForm({
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div style={{ marginBottom: '1rem' }}>
-        <label htmlFor="guidance-permitted">Permitted use</label>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div>
+        <label htmlFor="guidance-permitted" className="label-field">
+          Permitted use
+        </label>
         <textarea
           id="guidance-permitted"
           value={permittedText}
           onChange={(e) => setPermittedText(e.target.value)}
           rows={4}
-          style={{ width: '100%', display: 'block', marginTop: '0.25rem' }}
+          className="input-field mt-1"
         />
       </div>
-      <div style={{ marginBottom: '1rem' }}>
-        <label htmlFor="guidance-prohibited">Prohibited use</label>
+      <div>
+        <label htmlFor="guidance-prohibited" className="label-field">
+          Prohibited use
+        </label>
         <textarea
           id="guidance-prohibited"
           value={prohibitedText}
           onChange={(e) => setProhibitedText(e.target.value)}
           rows={4}
-          style={{ width: '100%', display: 'block', marginTop: '0.25rem' }}
+          className="input-field mt-1"
         />
       </div>
 
-      <fieldset style={{ marginBottom: '1rem' }}>
-        <legend>Permitted examples</legend>
-        {permittedExamples.map((ex, i) => (
-          <div key={i} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
-            <input
-              value={ex}
-              onChange={(e) => setPermittedAt(i, e.target.value)}
-              style={{ flex: 1 }}
-            />
-            <button type="button" onClick={() => removePermitted(i)}>
-              Remove
-            </button>
-          </div>
-        ))}
-        <button type="button" onClick={addPermitted}>
+      <fieldset className="border border-slate-200 rounded-lg p-4">
+        <legend className="label-field">Permitted examples</legend>
+        <div className="space-y-2 mt-2">
+          {permittedExamples.map((ex, i) => (
+            <div key={i} className="flex gap-2 items-center">
+              <input
+                value={ex}
+                onChange={(e) => setPermittedAt(i, e.target.value)}
+                className="input-field flex-1"
+              />
+              <button type="button" onClick={() => removePermitted(i)} className="btn-secondary">
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+        <button type="button" onClick={addPermitted} className="btn-secondary mt-2">
           Add example
         </button>
       </fieldset>
 
-      <fieldset style={{ marginBottom: '1rem' }}>
-        <legend>Prohibited examples</legend>
-        {prohibitedExamples.map((ex, i) => (
-          <div key={i} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
-            <input
-              value={ex}
-              onChange={(e) => setProhibitedAt(i, e.target.value)}
-              style={{ flex: 1 }}
-            />
-            <button type="button" onClick={() => removeProhibited(i)}>
-              Remove
-            </button>
-          </div>
-        ))}
-        <button type="button" onClick={addProhibited}>
+      <fieldset className="border border-slate-200 rounded-lg p-4">
+        <legend className="label-field">Prohibited examples</legend>
+        <div className="space-y-2 mt-2">
+          {prohibitedExamples.map((ex, i) => (
+            <div key={i} className="flex gap-2 items-center">
+              <input
+                value={ex}
+                onChange={(e) => setProhibitedAt(i, e.target.value)}
+                className="input-field flex-1"
+              />
+              <button type="button" onClick={() => removeProhibited(i)} className="btn-secondary">
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+        <button type="button" onClick={addProhibited} className="btn-secondary mt-2">
           Add example
         </button>
       </fieldset>
 
-      <button type="submit" disabled={isSaving}>
+      <button type="submit" disabled={isSaving} className="btn-primary">
         {isSaving ? 'Saving…' : 'Save guidance'}
       </button>
     </form>

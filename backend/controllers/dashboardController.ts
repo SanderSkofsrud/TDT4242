@@ -5,7 +5,10 @@ import {
   getInstructorAggregateForCourse,
   getFacultyAggregateForFaculty,
 } from '../models/dashboard.js'
-import { isUserInstructorInCourse } from '../models/enrolment.js'
+import {
+  isUserInstructorInCourse,
+  getCoursesForInstructor,
+} from '../models/enrolment.js'
 import { logAccess } from '../models/accessLog.js'
 import { CAPABILITIES } from '../config/capabilities.js'
 
@@ -61,6 +64,29 @@ export async function getStudentDashboard(
       console.error('getStudentDashboard error:', error)
     }
 
+    res.status(500).json(INTERNAL_ERROR_BODY)
+  }
+}
+
+export async function getInstructorCourses(
+  req: Request,
+  res: Response,
+  _next: NextFunction,
+): Promise<void> {
+  try {
+    const userId = req.user?.id
+    if (!userId) {
+      res.status(500).json(INTERNAL_ERROR_BODY)
+      return
+    }
+
+    const courses = await getCoursesForInstructor(userId)
+    res.status(200).json({ courses })
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
+      console.error('getInstructorCourses error:', error)
+    }
     res.status(500).json(INTERNAL_ERROR_BODY)
   }
 }

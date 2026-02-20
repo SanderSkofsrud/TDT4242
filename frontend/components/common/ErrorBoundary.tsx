@@ -24,11 +24,15 @@ export class ErrorBoundary extends React.Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div className="container" style={{ padding: '2rem', textAlign: 'center' }}>
-          <p style={{ marginBottom: '1rem' }}>
+        <div className="container-app py-16 text-center">
+          <p className="mb-4 text-slate-700 text-lg">
             Something went wrong. Please refresh the page.
           </p>
-          <button type="button" onClick={() => window.location.reload()}>
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="btn-primary"
+          >
             Refresh
           </button>
         </div>

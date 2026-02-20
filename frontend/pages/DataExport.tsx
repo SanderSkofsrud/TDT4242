@@ -19,13 +19,15 @@ export default function DataExport() {
   }
 
   return (
-    <div className="container">
-      <h1>Data export</h1>
-      <p>
+    <div className="container-app py-12 sm:py-16">
+      <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-6">
+        Data export
+      </h1>
+      <p className="text-slate-600 max-w-xl mb-6 leading-relaxed">
         Your export will include all your AI usage declarations and sharing
         preferences in JSON format.
       </p>
-      <ul style={{ marginLeft: '1.5rem', marginBottom: '1rem' }}>
+      <ul className="list-disc list-inside text-slate-600 space-y-1 mb-8 max-w-xl">
         <li>Included: declarations, sharing preferences</li>
         <li>Not included: email, authentication data</li>
       </ul>
@@ -33,11 +35,12 @@ export default function DataExport() {
         type="button"
         onClick={handleDownload}
         disabled={isExporting}
+        className="btn-primary"
       >
         {isExporting ? 'Preparing download…' : 'Download My Data'}
       </button>
       {success && (
-        <p style={{ marginTop: '1rem', color: 'green' }}>
+        <p className="mt-4 text-emerald-500 font-medium">
           Your data export has been downloaded.
         </p>
       )}

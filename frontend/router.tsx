@@ -11,6 +11,9 @@ const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
 const PrivacyNotice = lazy(() => import('./pages/PrivacyNotice'))
 const StudentDashboard = lazy(() => import('./pages/StudentDashboard'))
+const InstructorDashboardHome = lazy(
+  () => import('./pages/InstructorDashboardHome'),
+)
 const InstructorDashboard = lazy(
   () => import('./pages/InstructorDashboard'),
 )
@@ -59,9 +62,9 @@ function ProtectedRoute({
     const userCapabilities = ROLE_CAPABILITIES[user.role] ?? []
     if (!userCapabilities.includes(requiredCapability)) {
       return (
-        <div>
-          <h2>Access Denied</h2>
-          <p>You do not have permission to view this page.</p>
+        <div className="container-app py-16 text-center">
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Access Denied</h2>
+          <p className="text-slate-600">You do not have permission to view this page.</p>
         </div>
       )
     }
@@ -76,6 +79,32 @@ function PublicOnlyRoute({ children }: { children: React.ReactElement }) {
     return <Navigate to="/dashboard" replace />
   }
   return children
+}
+
+function DashboardByRole() {
+  const { user } = useAuth()
+  if (!user) return null
+  if (user.role === 'student') {
+    return <StudentDashboard />
+  }
+  if (user.role === 'instructor') {
+    return <InstructorDashboardHome />
+  }
+  if (user.role === 'head_of_faculty') {
+    return (
+      <div className="container-app py-12 sm:py-16">
+        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-4">Dashboard</h1>
+        <p className="text-slate-600 mb-2">You are logged in as head of faculty. To view faculty aggregate data, go to:</p>
+        <code className="block p-3 bg-slate-100 rounded-lg text-sm text-slate-800">/dashboard/faculty?facultyId=YOUR_FACULTY_ID</code>
+      </div>
+    )
+  }
+  return (
+    <div className="container-app py-12 sm:py-16">
+      <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-4">Dashboard</h1>
+      <p className="text-slate-600">No dashboard view for your role.</p>
+    </div>
+  )
 }
 
 export function AppRouter() {
@@ -111,8 +140,8 @@ export function AppRouter() {
           <Route
             path="/dashboard"
             element={
-              <ProtectedRoute requiredCapability="dashboard:read:own">
-                <StudentDashboard />
+              <ProtectedRoute>
+                <DashboardByRole />
               </ProtectedRoute>
             }
           />

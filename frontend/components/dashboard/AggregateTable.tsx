@@ -14,37 +14,33 @@ interface AggregateTableProps {
 
 export function AggregateTable({ data }: AggregateTableProps) {
   return (
-    <div className="card">
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+    <div className="card-elevated overflow-x-auto">
+      <table className="w-full border-collapse">
         <thead>
           <tr>
-            <th style={{ textAlign: 'left', padding: '0.25rem', borderBottom: '1px solid #ddd' }}>
+            <th className="text-left py-3 px-4 border-b border-slate-200 font-semibold text-slate-700">
               Assignment
             </th>
-            <th style={{ textAlign: 'left', padding: '0.25rem', borderBottom: '1px solid #ddd' }}>
+            <th className="text-left py-3 px-4 border-b border-slate-200 font-semibold text-slate-700">
               Category
             </th>
-            <th style={{ textAlign: 'left', padding: '0.25rem', borderBottom: '1px solid #ddd' }}>
+            <th className="text-left py-3 px-4 border-b border-slate-200 font-semibold text-slate-700">
               Frequency
             </th>
-            <th style={{ textAlign: 'right', padding: '0.25rem', borderBottom: '1px solid #ddd' }}>
+            <th className="text-right py-3 px-4 border-b border-slate-200 font-semibold text-slate-700">
               Count
             </th>
           </tr>
         </thead>
         <tbody>
           {data.map((row, i) => (
-            <tr key={i}>
-              <td style={{ padding: '0.25rem', borderBottom: '1px solid #eee' }}>
+            <tr key={i} className="border-b border-slate-100">
+              <td className="py-3 px-4 text-slate-700">
                 {isInstructorRow(row) ? row.assignmentId : row.courseId}
               </td>
-              <td style={{ padding: '0.25rem', borderBottom: '1px solid #eee' }}>
-                {row.category}
-              </td>
-              <td style={{ padding: '0.25rem', borderBottom: '1px solid #eee' }}>
-                {row.frequency}
-              </td>
-              <td style={{ textAlign: 'right', padding: '0.25rem', borderBottom: '1px solid #eee' }}>
+              <td className="py-3 px-4 text-slate-700">{row.category}</td>
+              <td className="py-3 px-4 text-slate-700">{row.frequency}</td>
+              <td className="py-3 px-4 text-right text-slate-700">
                 {row.declarationCount}
               </td>
             </tr>

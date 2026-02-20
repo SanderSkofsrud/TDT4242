@@ -29,15 +29,17 @@ export default function PrivacySettings() {
   }
 
   return (
-    <div className="container">
-      <h1>Privacy and sharing</h1>
-      {error && <p className="error">{error.message}</p>}
+    <div className="container-app py-12 sm:py-16">
+      <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-8">
+        Privacy and sharing
+      </h1>
+      {error && <p className="error-message mb-4">{error.message}</p>}
       <SharingStatus
         preferences={preferences}
         onRevoke={handleRevoke}
         onReinstate={handleReinstate}
       />
-      {busy && <p>Saving…</p>}
+      {busy && <p className="text-slate-500 mt-4">Saving…</p>}
       <PrivacyBadge />
     </div>
   )

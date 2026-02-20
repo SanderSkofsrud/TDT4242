@@ -10,30 +10,30 @@ export function FeedbackView({ feedback }: FeedbackViewProps) {
     feedback
 
   return (
-    <div className="container">
-      <section className="card" style={{ marginBottom: '1rem' }}>
-        <h2>Your declaration</h2>
-        <p><strong>Categories:</strong> {categories.join(', ')}</p>
-        <p><strong>Frequency:</strong> {frequency}</p>
+    <div className="container-app py-12 sm:py-16">
+      <section className="card-elevated mb-6">
+        <h2 className="text-xl font-bold text-slate-900 mb-3">Your declaration</h2>
+        <p className="text-slate-700"><strong>Categories:</strong> {categories.join(', ')}</p>
+        <p className="text-slate-700"><strong>Frequency:</strong> {frequency}</p>
       </section>
 
       {guidance && (
         <>
-          <section className="card" style={{ marginBottom: '1rem' }}>
-            <h2>Permitted use</h2>
-            <p>{guidance.permittedText}</p>
+          <section className="card-elevated mb-6">
+            <h2 className="text-xl font-bold text-slate-900 mb-2">Permitted use</h2>
+            <p className="text-slate-600">{guidance.permittedText}</p>
           </section>
-          <section className="card" style={{ marginBottom: '1rem' }}>
-            <h2>Prohibited use</h2>
-            <p>{guidance.prohibitedText}</p>
+          <section className="card-elevated mb-6">
+            <h2 className="text-xl font-bold text-slate-900 mb-2">Prohibited use</h2>
+            <p className="text-slate-600">{guidance.prohibitedText}</p>
           </section>
         </>
       )}
 
       {feedbackTemplates && feedbackTemplates.length > 0 && (
-        <section className="card" style={{ marginBottom: '1rem' }}>
-          <h2>Things to consider</h2>
-          <ul style={{ marginLeft: '1.5rem' }}>
+        <section className="card-elevated mb-6">
+          <h2 className="text-xl font-bold text-slate-900 mb-3">Things to consider</h2>
+          <ul className="list-disc list-inside text-slate-600 space-y-1">
             {feedbackTemplates.map((t, i) => (
               <li key={i}>{t.templateText}</li>
             ))}

@@ -5,6 +5,7 @@ import { requireCapability } from '../middleware/rbac.js'
 import { CAPABILITIES } from '../config/capabilities.js'
 import {
   getStudentDashboard,
+  getInstructorCourses,
   getInstructorDashboard,
   getFacultyDashboard,
 } from '../controllers/dashboardController.js'
@@ -16,6 +17,13 @@ router.get(
   authenticate,
   requireCapability(CAPABILITIES['dashboard:read:own']),
   getStudentDashboard,
+)
+
+router.get(
+  '/api/dashboard/instructor-courses',
+  authenticate,
+  requireCapability(CAPABILITIES['dashboard:read:course_aggregate']),
+  getInstructorCourses,
 )
 
 router.get(

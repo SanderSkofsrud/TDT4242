@@ -17,7 +17,7 @@ export function RevokeButton({ onRevoke }: RevokeButtonProps) {
 
   return (
     <>
-      <button type="button" onClick={() => setOpen(true)}>
+      <button type="button" onClick={() => setOpen(true)} className="btn-secondary">
         Revoke Access
       </button>
       <ConfirmDialog

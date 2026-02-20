@@ -15,26 +15,25 @@ export function CategorySelector({ value, onChange }: CategorySelectorProps) {
   }
 
   return (
-    <fieldset>
-      <legend>Categories</legend>
-      {AI_CATEGORIES.map(({ value: catValue, label }) => (
-        <div key={catValue} style={{ marginBottom: '0.5rem' }}>
-          <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+    <fieldset className="border border-slate-200 rounded-lg p-4">
+      <legend className="label-field">Categories</legend>
+      <div className="space-y-3 mt-2">
+        {AI_CATEGORIES.map(({ value: catValue, label }) => (
+          <label key={catValue} className="flex items-start gap-3 cursor-pointer">
             <input
               type="checkbox"
               checked={value.includes(catValue)}
               onChange={() => toggle(catValue)}
+              className="mt-1 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
             />
             <span>
-              <strong>{label}</strong>
+              <span className="font-semibold text-slate-900">{label}</span>
               <br />
-              <span style={{ fontSize: '0.875rem', color: '#555' }}>
-                {CATEGORY_GLOSSARY[catValue]}
-              </span>
+              <span className="text-sm text-slate-500">{CATEGORY_GLOSSARY[catValue]}</span>
             </span>
           </label>
-        </div>
-      ))}
+        ))}
+      </div>
     </fieldset>
   )
 }

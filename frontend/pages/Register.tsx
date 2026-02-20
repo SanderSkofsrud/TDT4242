@@ -41,53 +41,71 @@ export default function Register() {
   }
 
   return (
-    <div className="container">
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '1rem' }}>
-          <label htmlFor="register-email">Email</label>
-          <input
-            id="register-email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            autoComplete="email"
-          />
-        </div>
-        <div style={{ marginBottom: '1rem' }}>
-          <label htmlFor="register-password">Password</label>
-          <input
-            id="register-password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            autoComplete="new-password"
-          />
-        </div>
-        <div style={{ marginBottom: '1rem' }}>
-          <label htmlFor="register-role">Role</label>
-          <select
-            id="register-role"
-            value={role}
-            onChange={(e) => setRole(e.target.value as Exclude<User['role'], 'admin'>)}
-          >
-            {ROLE_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        {error && <p className="error">{error}</p>}
-        <button type="submit" disabled={isSubmitting}>
+    <div className="container-app py-12 sm:py-16">
+      <div className="max-w-md mx-auto">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-8">
           Register
-        </button>
-      </form>
-      <p style={{ marginTop: '1rem' }}>
-        <Link to="/login">Log in</Link>
-      </p>
+        </h1>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label htmlFor="register-email" className="label-field">
+              Email
+            </label>
+            <input
+              id="register-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="email"
+              className="input-field"
+            />
+          </div>
+          <div>
+            <label htmlFor="register-password" className="label-field">
+              Password
+            </label>
+            <input
+              id="register-password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete="new-password"
+              className="input-field"
+            />
+          </div>
+          <div>
+            <label htmlFor="register-role" className="label-field">
+              Role
+            </label>
+            <select
+              id="register-role"
+              value={role}
+              onChange={(e) => setRole(e.target.value as Exclude<User['role'], 'admin'>)}
+              className="input-field"
+            >
+              {ROLE_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          {error && <p className="error-message">{error}</p>}
+          <button type="submit" disabled={isSubmitting} className="btn-primary w-full">
+            Register
+          </button>
+        </form>
+        <p className="mt-6 text-slate-600">
+          <Link
+            to="/login"
+            className="text-primary-600 font-semibold hover:underline focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded"
+          >
+            Log in
+          </Link>
+        </p>
+      </div>
     </div>
   )
 }

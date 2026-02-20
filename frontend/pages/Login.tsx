@@ -24,39 +24,54 @@ export default function Login() {
   }
 
   return (
-    <div className="container">
-      <h1>Log in</h1>
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '1rem' }}>
-          <label htmlFor="login-email">Email</label>
-          <input
-            id="login-email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            autoComplete="email"
-          />
-        </div>
-        <div style={{ marginBottom: '1rem' }}>
-          <label htmlFor="login-password">Password</label>
-          <input
-            id="login-password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            autoComplete="current-password"
-          />
-        </div>
-        {error && <p className="error">{error}</p>}
-        <button type="submit" disabled={isSubmitting}>
+    <div className="container-app py-12 sm:py-16">
+      <div className="max-w-md mx-auto">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-8">
           Log in
-        </button>
-      </form>
-      <p style={{ marginTop: '1rem' }}>
-        <Link to="/register">Register</Link>
-      </p>
+        </h1>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label htmlFor="login-email" className="label-field">
+              Email
+            </label>
+            <input
+              id="login-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="email"
+              className="input-field"
+            />
+          </div>
+          <div>
+            <label htmlFor="login-password" className="label-field">
+              Password
+            </label>
+            <input
+              id="login-password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete="current-password"
+              className="input-field"
+            />
+          </div>
+          {error && <p className="error-message">{error}</p>}
+          <button type="submit" disabled={isSubmitting} className="btn-primary w-full">
+            Log in
+          </button>
+        </form>
+        <p className="mt-6 text-slate-600">
+          <Link
+            to="/register"
+            className="text-primary-600 font-semibold hover:underline focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded"
+          >
+            Register
+          </Link>
+        </p>
+      </div>
     </div>
   )
 }

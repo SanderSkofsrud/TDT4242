@@ -29,8 +29,8 @@ export default function DeclarationSubmit() {
 
   if (!assignmentId) {
     return (
-      <div className="container">
-        <p className="error">No assignment specified</p>
+      <div className="container-app py-12">
+        <p className="error-message">No assignment specified</p>
         <PrivacyBadge />
       </div>
     )
@@ -47,8 +47,8 @@ export default function DeclarationSubmit() {
 
   if (guidanceError) {
     return (
-      <div className="container">
-        <p className="error">{guidanceError.message}</p>
+      <div className="container-app py-12">
+        <p className="error-message">{guidanceError.message}</p>
         <PrivacyBadge />
       </div>
     )
@@ -89,14 +89,16 @@ export default function DeclarationSubmit() {
   }
 
   return (
-    <div className="container">
-      <h1>Submit AI usage declaration</h1>
+    <div className="container-app py-12 sm:py-16">
+      <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-8">
+        Submit AI usage declaration
+      </h1>
 
       {guidance && (
-        <div className="card" style={{ marginBottom: '1.5rem' }}>
-          <h2>Assignment guidance</h2>
-          <p><strong>Permitted:</strong> {guidance.permittedText}</p>
-          <p><strong>Prohibited:</strong> {guidance.prohibitedText}</p>
+        <div className="card-elevated mb-8">
+          <h2 className="text-xl font-bold text-slate-900 mb-3">Assignment guidance</h2>
+          <p className="text-slate-700 mb-1"><strong>Permitted:</strong> {guidance.permittedText}</p>
+          <p className="text-slate-700"><strong>Prohibited:</strong> {guidance.prohibitedText}</p>
         </div>
       )}
 
@@ -105,24 +107,17 @@ export default function DeclarationSubmit() {
           e.preventDefault()
           handleOpenConfirm()
         }}
+        className="space-y-8"
       >
-        <div style={{ marginBottom: '1.5rem' }}>
-          <CategorySelector value={categories} onChange={setCategories} />
-        </div>
-        <div style={{ marginBottom: '1.5rem' }}>
-          <ToolSelector value={toolsUsed} onChange={setToolsUsed} />
-        </div>
-        <div style={{ marginBottom: '1.5rem' }}>
-          <FrequencySelector value={frequency} onChange={setFrequency} />
-        </div>
-        <div style={{ marginBottom: '1.5rem' }}>
-          <FreeTextContext value={contextText} onChange={setContextText} />
-        </div>
+        <CategorySelector value={categories} onChange={setCategories} />
+        <ToolSelector value={toolsUsed} onChange={setToolsUsed} />
+        <FrequencySelector value={frequency} onChange={setFrequency} />
+        <FreeTextContext value={contextText} onChange={setContextText} />
 
-        {validationError && <p className="error">{validationError}</p>}
-        {submitError && <p className="error">{submitError.message}</p>}
+        {validationError && <p className="error-message">{validationError}</p>}
+        {submitError && <p className="error-message">{submitError.message}</p>}
 
-        <button type="submit" disabled={isSubmitting}>
+        <button type="submit" disabled={isSubmitting} className="btn-primary">
           Continue to confirmation
         </button>
       </form>

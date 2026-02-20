@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react'
 
 import type {
   StudentDashboardResponse,
+  InstructorCoursesResponse,
   InstructorDashboardResponse,
   FacultyDashboardResponse,
 } from '../types/models'
 import {
   getStudentDashboard,
+  getInstructorCourses,
   getInstructorDashboard,
   getFacultyDashboard,
 } from '../services/dashboardService'
@@ -21,6 +23,37 @@ export function useStudentDashboard() {
     ;(async () => {
       try {
         const resp = await getStudentDashboard()
+        if (!cancelled) {
+          setData(resp)
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(err as Error)
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false)
+        }
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  return { data, isLoading, error }
+}
+
+export function useInstructorCourses() {
+  const [data, setData] = useState<InstructorCoursesResponse | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      try {
+        const resp = await getInstructorCourses()
         if (!cancelled) {
           setData(resp)
         }

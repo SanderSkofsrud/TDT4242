@@ -13,53 +13,54 @@ export function SharingStatus({
   onReinstate,
 }: SharingStatusProps) {
   return (
-    <div className="card">
-      <h2>Sharing by course</h2>
+    <div className="card-elevated">
+      <h2 className="text-xl font-bold text-slate-900 mb-4">Sharing by course</h2>
       {preferences.length === 0 ? (
-        <p>You have no course enrolments with sharing preferences.</p>
+        <p className="text-slate-600">You have no course enrolments with sharing preferences.</p>
       ) : (
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr>
-              <th style={{ textAlign: 'left', padding: '0.25rem', borderBottom: '1px solid #ddd' }}>
-                Course
-              </th>
-              <th style={{ textAlign: 'left', padding: '0.25rem', borderBottom: '1px solid #ddd' }}>
-                Status
-              </th>
-              <th style={{ textAlign: 'left', padding: '0.25rem', borderBottom: '1px solid #ddd' }}>
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {preferences.map((pref) => (
-              <tr key={pref.courseId}>
-                <td style={{ padding: '0.25rem', borderBottom: '1px solid #eee' }}>
-                  {pref.courseId}
-                </td>
-                <td style={{ padding: '0.25rem', borderBottom: '1px solid #eee' }}>
-                  {pref.isShared ? 'Shared' : 'Private'}
-                </td>
-                <td style={{ padding: '0.25rem', borderBottom: '1px solid #eee' }}>
-                  {pref.isShared ? (
-                    <RevokeButton
-                      courseId={pref.courseId}
-                      onRevoke={() => onRevoke(pref.courseId)}
-                    />
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => onReinstate(pref.courseId)}
-                    >
-                      Reinstate Access
-                    </button>
-                  )}
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr>
+                <th className="text-left py-2 px-3 border-b border-slate-200 font-semibold text-slate-700">
+                  Course
+                </th>
+                <th className="text-left py-2 px-3 border-b border-slate-200 font-semibold text-slate-700">
+                  Status
+                </th>
+                <th className="text-left py-2 px-3 border-b border-slate-200 font-semibold text-slate-700">
+                  Action
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {preferences.map((pref) => (
+                <tr key={pref.courseId} className="border-b border-slate-100">
+                  <td className="py-3 px-3 text-slate-700">{pref.courseId}</td>
+                  <td className="py-3 px-3 text-slate-700">
+                    {pref.isShared ? 'Shared' : 'Private'}
+                  </td>
+                  <td className="py-3 px-3">
+                    {pref.isShared ? (
+                      <RevokeButton
+                        courseId={pref.courseId}
+                        onRevoke={() => onRevoke(pref.courseId)}
+                      />
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => onReinstate(pref.courseId)}
+                        className="btn-secondary"
+                      >
+                        Reinstate Access
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   )

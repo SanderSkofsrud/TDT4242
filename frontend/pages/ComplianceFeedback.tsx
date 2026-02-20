@@ -11,8 +11,8 @@ export default function ComplianceFeedback() {
 
   if (!declarationId) {
     return (
-      <div className="container">
-        <p className="error">No declaration specified</p>
+      <div className="container-app py-12">
+        <p className="error-message">No declaration specified</p>
         <PrivacyBadge />
       </div>
     )
@@ -29,8 +29,8 @@ export default function ComplianceFeedback() {
 
   if (error || !feedback) {
     return (
-      <div className="container">
-        <p className="error">{error?.message ?? 'Feedback not found'}</p>
+      <div className="container-app py-12">
+        <p className="error-message">{error?.message ?? 'Feedback not found'}</p>
         <PrivacyBadge />
       </div>
     )

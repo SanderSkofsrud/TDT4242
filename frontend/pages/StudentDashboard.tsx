@@ -20,8 +20,8 @@ export default function StudentDashboard() {
 
   if (error) {
     return (
-      <div className="container">
-        <p className="error">{error.message}</p>
+      <div className="container-app py-12">
+        <p className="error-message">{error.message}</p>
         <PrivacyBadge />
       </div>
     )
@@ -29,8 +29,8 @@ export default function StudentDashboard() {
 
   if (!data) {
     return (
-      <div className="container">
-        <p>No data available.</p>
+      <div className="container-app py-12">
+        <p className="text-slate-600">No data available.</p>
         <PrivacyBadge />
       </div>
     )
@@ -39,36 +39,35 @@ export default function StudentDashboard() {
   const { declarations, summary } = data
 
   return (
-    <div className="container">
-      <h1>My dashboard</h1>
+    <div className="container-app py-12 sm:py-16">
+      <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-8">
+        My dashboard
+      </h1>
 
-      <section className="card" style={{ marginBottom: '1.5rem' }}>
-        <h2>Usage overview</h2>
+      <section className="card-elevated mb-8">
+        <h2 className="text-xl font-bold text-slate-900 mb-4">Usage overview</h2>
         <UsageChart byCategory={summary.byCategory} />
       </section>
 
-      <section style={{ marginBottom: '1.5rem' }}>
+      <section className="mb-8">
         <CategoryBreakdown
           byCategory={summary.byCategory}
           byFrequency={summary.byFrequency}
         />
       </section>
 
-      <section className="card">
-        <h2>My declarations</h2>
+      <section className="card-elevated">
+        <h2 className="text-xl font-bold text-slate-900 mb-4">My declarations</h2>
         {declarations.length === 0 ? (
-          <p>You have not submitted any declarations yet.</p>
+          <p className="text-slate-600">You have not submitted any declarations yet.</p>
         ) : (
-          <ul style={{ listStyle: 'none', padding: 0 }}>
+          <ul className="divide-y divide-slate-100">
             {declarations.map((d) => (
-              <li
-                key={d.id}
-                style={{
-                  padding: '0.5rem 0',
-                  borderBottom: '1px solid #eee',
-                }}
-              >
-                <Link to={`/declarations/${d.id}/feedback`}>
+              <li key={d.id} className="py-3 first:pt-0">
+                <Link
+                  to={`/declarations/${d.id}/feedback`}
+                  className="text-primary-600 font-medium hover:underline focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded"
+                >
                   Assignment {d.assignmentId} — {d.categories.join(', ')} — {d.frequency} —{' '}
                   {new Date(d.submittedAt).toLocaleDateString()}
                 </Link>

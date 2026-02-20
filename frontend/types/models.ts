@@ -97,6 +97,16 @@ export interface InstructorAggregateRow {
   declarationCount: number
 }
 
+export interface InstructorCourse {
+  id: string
+  code: string
+  name: string
+}
+
+export interface InstructorCoursesResponse {
+  courses: InstructorCourse[]
+}
+
 export interface InstructorDashboardResponse {
   suppressed: boolean
   courseId?: string

@@ -15,8 +15,8 @@ export default function AssignmentGuidance() {
 
   if (!assignmentId) {
     return (
-      <div className="container">
-        <p className="error">No assignment specified</p>
+      <div className="container-app py-12">
+        <p className="error-message">No assignment specified</p>
         <PrivacyBadge />
       </div>
     )
@@ -33,11 +33,11 @@ export default function AssignmentGuidance() {
 
   if (error) {
     return (
-      <div className="container">
+      <div className="container-app py-12">
         {is404(error) ? (
-          <p>No guidance has been provided for this assignment yet.</p>
+          <p className="text-slate-600">No guidance has been provided for this assignment yet.</p>
         ) : (
-          <p className="error">{error.message}</p>
+          <p className="error-message">{error.message}</p>
         )}
         <PrivacyBadge />
       </div>
@@ -46,8 +46,8 @@ export default function AssignmentGuidance() {
 
   if (!guidance) {
     return (
-      <div className="container">
-        <p>No guidance has been provided for this assignment yet.</p>
+      <div className="container-app py-12">
+        <p className="text-slate-600">No guidance has been provided for this assignment yet.</p>
         <PrivacyBadge />
       </div>
     )
@@ -55,8 +55,10 @@ export default function AssignmentGuidance() {
 
   return (
     <>
-      <div className="container">
-        <h1>Assignment guidance</h1>
+      <div className="container-app py-12 sm:py-16">
+        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-8">
+          Assignment guidance
+        </h1>
         <GuidanceCard guidance={guidance} />
       </div>
       <PrivacyBadge />

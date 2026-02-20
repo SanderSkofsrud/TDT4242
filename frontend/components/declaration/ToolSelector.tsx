@@ -22,20 +22,21 @@ export function ToolSelector({ value, onChange }: ToolSelectorProps) {
   }
 
   return (
-    <fieldset>
-      <legend>Tools used</legend>
-      {AVAILABLE_TOOLS.map((tool) => (
-        <div key={tool} style={{ marginBottom: '0.25rem' }}>
-          <label>
+    <fieldset className="border border-slate-200 rounded-lg p-4">
+      <legend className="label-field">Tools used</legend>
+      <div className="flex flex-wrap gap-x-6 gap-y-2 mt-2">
+        {AVAILABLE_TOOLS.map((tool) => (
+          <label key={tool} className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
               checked={value.includes(tool)}
               onChange={() => toggle(tool)}
+              className="rounded border-slate-300 text-primary-600 focus:ring-primary-500"
             />
-            {tool}
+            <span className="text-slate-700">{tool}</span>
           </label>
-        </div>
-      ))}
+        ))}
+      </div>
     </fieldset>
   )
 }

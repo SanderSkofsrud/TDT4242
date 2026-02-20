@@ -8,52 +8,48 @@ export function CategoryBreakdown({ byCategory, byFrequency }: CategoryBreakdown
   const frequencyRows = Object.entries(byFrequency)
 
   return (
-    <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
-      <div className="card" style={{ flex: '1 1 200px' }}>
-        <h3 style={{ marginBottom: '0.5rem' }}>By category</h3>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+    <div className="flex flex-wrap gap-8">
+      <div className="card-elevated flex-1 min-w-[200px]">
+        <h3 className="text-lg font-semibold text-slate-900 mb-3">By category</h3>
+        <table className="w-full border-collapse">
           <thead>
             <tr>
-              <th style={{ textAlign: 'left', padding: '0.25rem', borderBottom: '1px solid #ddd' }}>
+              <th className="text-left py-2 px-3 border-b border-slate-200 font-semibold text-slate-700">
                 Category
               </th>
-              <th style={{ textAlign: 'right', padding: '0.25rem', borderBottom: '1px solid #ddd' }}>
+              <th className="text-right py-2 px-3 border-b border-slate-200 font-semibold text-slate-700">
                 Count
               </th>
             </tr>
           </thead>
           <tbody>
             {categoryRows.map(([name, count]) => (
-              <tr key={name}>
-                <td style={{ padding: '0.25rem', borderBottom: '1px solid #eee' }}>{name}</td>
-                <td style={{ textAlign: 'right', padding: '0.25rem', borderBottom: '1px solid #eee' }}>
-                  {count}
-                </td>
+              <tr key={name} className="border-b border-slate-100">
+                <td className="py-2 px-3 text-slate-700">{name}</td>
+                <td className="py-2 px-3 text-right text-slate-700">{count}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <div className="card" style={{ flex: '1 1 200px' }}>
-        <h3 style={{ marginBottom: '0.5rem' }}>By frequency</h3>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <div className="card-elevated flex-1 min-w-[200px]">
+        <h3 className="text-lg font-semibold text-slate-900 mb-3">By frequency</h3>
+        <table className="w-full border-collapse">
           <thead>
             <tr>
-              <th style={{ textAlign: 'left', padding: '0.25rem', borderBottom: '1px solid #ddd' }}>
+              <th className="text-left py-2 px-3 border-b border-slate-200 font-semibold text-slate-700">
                 Frequency
               </th>
-              <th style={{ textAlign: 'right', padding: '0.25rem', borderBottom: '1px solid #ddd' }}>
+              <th className="text-right py-2 px-3 border-b border-slate-200 font-semibold text-slate-700">
                 Count
               </th>
             </tr>
           </thead>
           <tbody>
             {frequencyRows.map(([name, count]) => (
-              <tr key={name}>
-                <td style={{ padding: '0.25rem', borderBottom: '1px solid #eee' }}>{name}</td>
-                <td style={{ textAlign: 'right', padding: '0.25rem', borderBottom: '1px solid #eee' }}>
-                  {count}
-                </td>
+              <tr key={name} className="border-b border-slate-100">
+                <td className="py-2 px-3 text-slate-700">{name}</td>
+                <td className="py-2 px-3 text-right text-slate-700">{count}</td>
               </tr>
             ))}
           </tbody>

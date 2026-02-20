@@ -12,8 +12,8 @@ export default function FacultyDashboard() {
 
   if (!facultyId) {
     return (
-      <div className="container">
-        <p className="error">No faculty specified</p>
+      <div className="container-app py-12">
+        <p className="error-message">No faculty specified</p>
       </div>
     )
   }
@@ -24,24 +24,26 @@ export default function FacultyDashboard() {
 
   if (error) {
     return (
-      <div className="container">
-        <p className="error">{error.message}</p>
+      <div className="container-app py-12">
+        <p className="error-message">{error.message}</p>
       </div>
     )
   }
 
   if (!data) {
     return (
-      <div className="container">
-        <p>No data available.</p>
+      <div className="container-app py-12">
+        <p className="text-slate-600">No data available.</p>
       </div>
     )
   }
 
   if (data.suppressed) {
     return (
-      <div className="container">
-        <h1>Faculty dashboard</h1>
+      <div className="container-app py-12 sm:py-16">
+        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-6">
+          Faculty dashboard
+        </h1>
         <SuppressedNotice />
       </div>
     )
@@ -49,16 +51,20 @@ export default function FacultyDashboard() {
 
   if (!data.data || data.data.length === 0) {
     return (
-      <div className="container">
-        <h1>Faculty dashboard</h1>
-        <p>No aggregate data for this faculty yet.</p>
+      <div className="container-app py-12 sm:py-16">
+        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-6">
+          Faculty dashboard
+        </h1>
+        <p className="text-slate-600">No aggregate data for this faculty yet.</p>
       </div>
     )
   }
 
   return (
-    <div className="container">
-      <h1>Faculty dashboard</h1>
+    <div className="container-app py-12 sm:py-16">
+      <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-8">
+        Faculty dashboard
+      </h1>
       <AggregateTable data={data.data} />
     </div>
   )

@@ -10,7 +10,7 @@ export function FreeTextContext({ value, onChange }: FreeTextContextProps) {
 
   return (
     <div>
-      <label htmlFor="declaration-context">
+      <label htmlFor="declaration-context" className="label-field">
         Optional context (e.g. used AI to understand a concept)
       </label>
       <textarea
@@ -19,9 +19,9 @@ export function FreeTextContext({ value, onChange }: FreeTextContextProps) {
         onChange={(e) => onChange(e.target.value)}
         maxLength={MAX_LENGTH}
         rows={4}
-        style={{ width: '100%', display: 'block', marginTop: '0.25rem' }}
+        className="input-field mt-1"
       />
-      <span style={{ fontSize: '0.875rem', color: '#666' }}>
+      <span className="text-sm text-slate-500 mt-1 block">
         {remaining} characters remaining
       </span>
     </div>
