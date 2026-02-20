@@ -1,17 +1,24 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { useAuth } from '../context/AuthContext'
 import { usePrivacy } from '../context/PrivacyContext'
 
 export default function PrivacyNotice() {
+  const navigate = useNavigate()
   const { acknowledge } = usePrivacy()
   const { logout } = useAuth()
   const [isAcknowledging, setIsAcknowledging] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleAcknowledge = async () => {
+    setError(null)
     setIsAcknowledging(true)
     try {
       await acknowledge()
+      navigate('/dashboard', { replace: true })
+    } catch {
+      setError('Failed to save acknowledgement. Please try again.')
     } finally {
       setIsAcknowledging(false)
     }
@@ -65,6 +72,7 @@ export default function PrivacyNotice() {
       </section>
 
       <div style={{ marginTop: '2rem' }}>
+        {error && <p className="error">{error}</p>}
         <button
           type="button"
           onClick={handleAcknowledge}

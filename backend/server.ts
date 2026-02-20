@@ -1,3 +1,4 @@
+import cors from 'cors'
 import express from 'express'
 import noTelemetry from './middleware/noTelemetry.js'
 import userRoutes from './routes/user.js'
@@ -10,6 +11,14 @@ import policyRoutes from './routes/policy.js'
 import { scheduleRetentionCleanup } from './jobs/retentionCleanup.js'
 
 const app = express()
+
+// CORS: allow frontend origin (dev and typical Docker port)
+app.use(
+  cors({
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+    credentials: true,
+  }),
+)
 
 // Core middleware
 app.use(express.json())

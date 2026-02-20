@@ -28,8 +28,13 @@ export default function Register() {
       await registerService(email, password, role)
       await login(email, password)
       navigate('/dashboard')
-    } catch (err) {
-      setError((err as Error).message || 'Registration failed')
+    } catch (err: unknown) {
+      const status = (err as { response?: { status: number } })?.response?.status
+      if (status === 409) {
+        setError('An account with this email already exists. Please log in instead.')
+      } else {
+        setError((err as Error).message || 'Registration failed')
+      }
     } finally {
       setIsSubmitting(false)
     }

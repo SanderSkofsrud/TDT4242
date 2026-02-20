@@ -1,10 +1,5 @@
 import { Suspense, lazy } from 'react'
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-} from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { useAuth } from './context/AuthContext'
 import { usePrivacy } from './context/PrivacyContext'
@@ -84,9 +79,8 @@ function PublicOnlyRoute({ children }: { children: React.ReactElement }) {
 
 export function AppRouter() {
   return (
-    <BrowserRouter>
-      <Suspense fallback={<LoadingSpinner />}>
-        <Routes>
+    <Suspense fallback={<LoadingSpinner />}>
+      <Routes>
           <Route
             path="/login"
             element={
@@ -192,8 +186,7 @@ export function AppRouter() {
 
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Routes>
-      </Suspense>
-    </BrowserRouter>
+    </Suspense>
   )
 }
 

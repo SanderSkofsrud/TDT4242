@@ -8,7 +8,7 @@ import {
 } from 'react'
 
 import type { User } from '../types/models'
-import { login as loginService, acknowledgePrivacyNotice } from '../services/userService'
+import * as userService from '../services/userService'
 import { registerUnauthorisedHandler, setAuthToken } from '../services/api'
 
 interface AuthContextValue {
@@ -64,7 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async (email: string, password: string) => {
       setIsLoading(true)
       try {
-        const { token: newToken } = await loginService(email, password)
+        const { token: newToken } = await userService.login(email, password)
         setTokenState(newToken)
         setAuthToken(newToken)
         initialToken = newToken
@@ -98,12 +98,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const acknowledgePrivacy = useCallback(
-    async (version: number) => {
-      if (!user) return
-      await acknowledgePrivacyNotice(version)
-      setUser({ ...user, privacyAckVersion: version })
+    async (version: number): Promise<void> => {
+      await userService.acknowledgePrivacyNotice(version)
+      setUser((prev) =>
+        prev ? { ...prev, privacyAckVersion: version } : prev,
+      )
     },
-    [user],
+    [],
   )
 
   const value = useMemo(

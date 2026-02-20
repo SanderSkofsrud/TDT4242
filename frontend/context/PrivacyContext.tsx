@@ -17,9 +17,9 @@ const PRIVACY_NOTICE_VERSION =
 
 export function PrivacyProvider({ children }: { children: React.ReactNode }) {
   const { user, acknowledgePrivacy } = useAuth()
-
+  const currentNoticeVersion = PRIVACY_NOTICE_VERSION
   const needsAcknowledgement =
-    !!user && (user.privacyAckVersion ?? 0) < PRIVACY_NOTICE_VERSION
+    !user || (user.privacyAckVersion ?? 0) < currentNoticeVersion
 
   const value: PrivacyContextValue = useMemo(
     () => ({
