@@ -1,5 +1,6 @@
 import { pool } from '../config/database.js'
 import { runMigrations } from './migrate.js'
+import { runSeedData } from './seed.js'
 
 const REQUIRED_TABLES = [
   'users',
@@ -53,28 +54,24 @@ async function checkWithRetry(): Promise<string[]> {
 }
 
 async function main(): Promise<void> {
-  let shouldClosePool = true
-
   try {
     const missingTables = await checkWithRetry()
 
-    if (missingTables.length === 0) {
+    if (missingTables.length > 0) {
+      // eslint-disable-next-line no-console
+      console.log(`[schema] Missing tables detected: ${missingTables.join(', ')}`)
+      // eslint-disable-next-line no-console
+      console.log('[schema] Running migrations...')
+
+      await runMigrations()
+    } else {
       // eslint-disable-next-line no-console
       console.log('[schema] Database schema is present, skipping migrations')
-      return
     }
 
-    // eslint-disable-next-line no-console
-    console.log(`[schema] Missing tables detected: ${missingTables.join(', ')}`)
-    // eslint-disable-next-line no-console
-    console.log('[schema] Running migrations...')
-
-    shouldClosePool = false
-    await runMigrations()
+    await runSeedData()
   } finally {
-    if (shouldClosePool) {
-      await pool.end()
-    }
+    await pool.end()
   }
 }
 

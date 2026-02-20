@@ -9,7 +9,8 @@
     "start": "node dist/server.js",
     "type-check": "npx tsc --noEmit",
     "lint": "eslint . --ext .ts --max-warnings 0",
-    "migrate": "npx tsc && node dist/scripts/migrate.js"
+    "migrate": "npx tsc && node dist/scripts/migrate.js",
+    "seed": "npx tsc && node dist/scripts/seed.js"
   },
   "dependencies": {
     "@types/bcrypt": "^6.0.0",
