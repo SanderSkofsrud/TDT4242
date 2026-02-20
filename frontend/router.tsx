@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 
 import { useAuth } from './context/AuthContext'
 import { usePrivacy } from './context/PrivacyContext'
@@ -41,6 +41,7 @@ function ProtectedRoute({
 }: ProtectedRouteProps) {
   const { user, isLoading } = useAuth()
   const { needsAcknowledgement } = usePrivacy()
+  const location = useLocation()
 
   if (isLoading) {
     return <LoadingSpinner />
@@ -50,7 +51,7 @@ function ProtectedRoute({
     return <Navigate to="/login" replace />
   }
 
-  if (needsAcknowledgement) {
+  if (needsAcknowledgement && location.pathname !== '/privacy-notice') {
     return <Navigate to="/privacy-notice" replace />
   }
 
