@@ -17,6 +17,7 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/sql ./dist/sql
 
 RUN mkdir -p ./uploads/policies
 
@@ -24,5 +25,5 @@ EXPOSE 3000
 
 ENV NODE_ENV=production
 
-CMD ["node", "dist/server.js"]
+CMD ["sh", "-c", "node dist/scripts/ensureSchema.js && node dist/server.js"]
 

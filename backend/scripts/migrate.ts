@@ -1,7 +1,11 @@
 import { readFile } from 'fs/promises'
-import { join } from 'path'
+import { dirname, join } from 'path'
+import { fileURLToPath } from 'url'
 
 import { pool } from '../config/database.js'
+
+const currentFilePath = fileURLToPath(import.meta.url)
+const currentDirPath = dirname(currentFilePath)
 
 async function runSqlFile(filePath: string, label: string): Promise<void> {
   const sql = await readFile(filePath, 'utf8')
@@ -28,10 +32,10 @@ async function runSqlFile(filePath: string, label: string): Promise<void> {
   }
 }
 
-async function main(): Promise<void> {
+export async function runMigrations(): Promise<void> {
   try {
-    const migrationsDir = join(__dirname, '..', 'sql', 'migrations')
-    const viewsDir = join(__dirname, '..', 'sql', 'views')
+    const migrationsDir = join(currentDirPath, '..', 'sql', 'migrations')
+    const viewsDir = join(currentDirPath, '..', 'sql', 'views')
 
     const migrationFiles = [
       '001_create_users.sql',
@@ -65,9 +69,13 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch(() => {
-  if (process.exitCode === undefined) {
-    process.exit(1)
-  }
-})
+const entryFilePath = process.argv[1]
+
+if (entryFilePath && currentFilePath === entryFilePath) {
+  runMigrations().catch(() => {
+    if (process.exitCode === undefined) {
+      process.exit(1)
+    }
+  })
+}
 
