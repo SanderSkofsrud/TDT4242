@@ -21,6 +21,21 @@ export interface Assignment {
   createdAt: string
 }
 
+export interface StudentAssignment {
+  id: string
+  title: string
+  dueDate: string
+  course: {
+    id: string
+    code: string
+    name: string
+  }
+  declaration: {
+    id: string
+    submittedAt: string
+  } | null
+}
+
 export interface AssignmentGuidance {
   id: string
   assignmentId: string
@@ -87,6 +102,10 @@ export interface StudentDashboardResponse {
     byCategory: Record<string, number>
     byFrequency: Record<string, number>
   }
+}
+
+export interface StudentAssignmentsResponse {
+  assignments: StudentAssignment[]
 }
 
 export interface InstructorAggregateRow {
