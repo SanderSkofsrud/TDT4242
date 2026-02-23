@@ -38,8 +38,18 @@ export function AggregateTable({ data }: AggregateTableProps) {
               <td className="py-3 px-4 text-slate-700">
                 {isInstructorRow(row) ? row.assignmentId : row.courseId}
               </td>
-              <td className="py-3 px-4 text-slate-700">{row.category}</td>
-              <td className="py-3 px-4 text-slate-700">{row.frequency}</td>
+              <td className="py-3 px-4 text-slate-700">
+                {row.category === 'suppressed'
+                  ? 'Suppressed bucket'
+                  : row.category.replace('_', ' ')}
+              </td>
+              <td className="py-3 px-4 text-slate-700">
+                {row.frequency === 'all'
+                  ? 'All'
+                  : row.frequency === 'suppressed'
+                    ? 'Suppressed'
+                    : row.frequency}
+              </td>
               <td className="py-3 px-4 text-right text-slate-700">
                 {row.declarationCount}
               </td>

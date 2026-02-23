@@ -4,10 +4,12 @@ import { LoadingSpinner } from '../components/common/LoadingSpinner'
 import { AggregateTable } from '../components/dashboard/AggregateTable'
 import { SuppressedNotice } from '../components/dashboard/SuppressedNotice'
 import { useInstructorDashboard } from '../hooks/useDashboard'
+import { useInstructorAssignments } from '../hooks/useAssignments'
 
 export default function InstructorDashboard() {
   const { courseId } = useParams<{ courseId: string }>()
   const { data, isLoading, error } = useInstructorDashboard(courseId ?? '')
+  const { data: assignmentsData } = useInstructorAssignments(courseId ?? '')
 
   if (!courseId) {
     return (
@@ -59,6 +61,17 @@ export default function InstructorDashboard() {
     )
   }
 
+  const assignmentTitleById = new Map(
+    (assignmentsData?.assignments ?? []).map((assignment) => [
+      assignment.id,
+      assignment.title,
+    ]),
+  )
+  const displayRows = data.data.map((row) => ({
+    ...row,
+    assignmentId: assignmentTitleById.get(row.assignmentId) ?? row.assignmentId,
+  }))
+
   return (
     <div className="container-app py-12 sm:py-16">
       <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-8">
@@ -72,7 +85,7 @@ export default function InstructorDashboard() {
           Manage assignment guidance
         </Link>
       </div>
-      <AggregateTable data={data.data} />
+      <AggregateTable data={displayRows} />
     </div>
   )
 }

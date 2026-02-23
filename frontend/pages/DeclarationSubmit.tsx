@@ -8,6 +8,7 @@ import { ToolSelector } from '../components/declaration/ToolSelector'
 import { FrequencySelector } from '../components/declaration/FrequencySelector'
 import { FreeTextContext } from '../components/declaration/FreeTextContext'
 import { ConfirmationModal } from '../components/declaration/ConfirmationModal'
+import { GuidanceCard } from '../components/guidance/GuidanceCard'
 import { useGuidance } from '../hooks/useGuidance'
 import { useSubmitDeclaration } from '../hooks/useDeclaration'
 import type { Declaration } from '../types/models'
@@ -97,8 +98,7 @@ export default function DeclarationSubmit() {
       {guidance && (
         <div className="card-elevated mb-8">
           <h2 className="text-xl font-bold text-slate-900 mb-3">Assignment guidance</h2>
-          <p className="text-slate-700 mb-1"><strong>Permitted:</strong> {guidance.permittedText}</p>
-          <p className="text-slate-700"><strong>Prohibited:</strong> {guidance.prohibitedText}</p>
+          <GuidanceCard guidance={guidance} />
         </div>
       )}
 

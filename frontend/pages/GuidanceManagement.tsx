@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 
 import { LoadingSpinner } from '../components/common/LoadingSpinner'
 import { PrivacyBadge } from '../components/common/PrivacyBadge'
@@ -8,6 +8,8 @@ import { useGuidanceForm } from '../hooks/useGuidance'
 
 export default function GuidanceManagement() {
   const { assignmentId } = useParams<{ assignmentId: string }>()
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const { guidance, isLoading, error } = useGuidance(assignmentId ?? '')
   const { save, isSaving, error: saveError } = useGuidanceForm(assignmentId ?? '')
 
@@ -19,6 +21,10 @@ export default function GuidanceManagement() {
     examples?: { permitted: string[]; prohibited: string[] } | null
   }) => {
     await save(data)
+    const courseId = searchParams.get('courseId')
+    if (courseId) {
+      navigate(`/dashboard/instructor/${courseId}/assignments?saved=1`)
+    }
   }
 
   if (!assignmentId) {

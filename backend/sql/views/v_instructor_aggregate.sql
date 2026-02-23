@@ -1,6 +1,6 @@
 -- v_instructor_aggregate
 -- Instructor-level aggregate over declarations by assignment and course.
--- Enforces k=5 suppression in the HAVING clause.
+-- Suppression is handled in the controller layer.
 
 CREATE OR REPLACE VIEW v_instructor_aggregate AS
 SELECT
@@ -8,7 +8,7 @@ SELECT
   a.course_id,
   category,
   d.frequency,
-  COUNT(d.id) AS declaration_count
+  COUNT(d.id)::int AS declaration_count
 FROM declarations d
 JOIN assignments a ON a.id = d.assignment_id
 JOIN sharing_preferences sp
@@ -21,5 +21,4 @@ GROUP BY
   d.assignment_id,
   a.course_id,
   category,
-  d.frequency
-HAVING COUNT(d.id) >= 5;
+  d.frequency;

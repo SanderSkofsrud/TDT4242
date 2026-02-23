@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 
 import { LoadingSpinner } from '../components/common/LoadingSpinner'
 import { useInstructorAssignments } from '../hooks/useAssignments'
@@ -7,6 +7,7 @@ import { createInstructorAssignment } from '../services/assignmentService'
 
 export default function InstructorAssignments() {
   const { courseId } = useParams<{ courseId: string }>()
+  const [searchParams] = useSearchParams()
   const { data, isLoading, error, refetch } = useInstructorAssignments(courseId ?? '')
   const [title, setTitle] = useState('')
   const [dueDate, setDueDate] = useState('')
@@ -34,6 +35,7 @@ export default function InstructorAssignments() {
   }
 
   const assignments = data?.assignments ?? []
+  const showSaved = searchParams.get('saved') === '1'
 
   return (
     <div className="container-app py-12 sm:py-16">
@@ -54,6 +56,12 @@ export default function InstructorAssignments() {
           Back to course dashboard
         </Link>
       </div>
+
+      {showSaved && (
+        <div className="mb-6 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-800">
+          Guidance saved successfully.
+        </div>
+      )}
 
       <section className="card-elevated mb-8">
         <h2 className="text-xl font-bold text-slate-900 mb-4">Add new assignment</h2>
@@ -155,7 +163,7 @@ export default function InstructorAssignments() {
                           View guidance
                         </Link>
                         <Link
-                          to={`/assignments/${assignment.id}/guidance/manage`}
+                          to={`/assignments/${assignment.id}/guidance/manage?courseId=${encodeURIComponent(courseId)}`}
                           className="btn-secondary"
                         >
                           Manage guidance

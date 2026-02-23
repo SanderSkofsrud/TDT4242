@@ -168,6 +168,11 @@ export interface InstructorDashboardResponse {
   suppressed: boolean
   courseId?: string
   message?: string
+  aggregationLevel?: 'assignment_category_frequency' | 'category_frequency' | 'category'
+  privacyThreshold?: number
+  enrolledStudents?: number
+  sharedStudentsWithDeclarations?: number
+  suppressedDeclarationCount?: number
   data?: InstructorAggregateRow[]
 }
 
@@ -185,6 +190,11 @@ export interface FacultyDashboardResponse {
   suppressed: boolean
   facultyId?: string
   message?: string
+  aggregationLevel?: 'assignment_category_frequency' | 'category_frequency' | 'category'
+  privacyThreshold?: number
+  enrolledStudents?: number
+  sharedStudentsWithDeclarations?: number
+  suppressedDeclarationCount?: number
   data?: FacultyAggregateRow[]
 }
 

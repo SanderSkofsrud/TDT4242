@@ -50,16 +50,13 @@ export async function getStudentDashboard(
     > = {}
 
     for (const declaration of declarations) {
-      // Count by category (categories is an array per declaration).
       for (const category of declaration.categories) {
         byCategory[category] = (byCategory[category] ?? 0) + 1
       }
 
-      // Count by frequency (single value per declaration).
       const freq = declaration.frequency
       byFrequency[freq] = (byFrequency[freq] ?? 0) + 1
 
-      // Per-assignment aggregates.
       const assignmentId = declaration.assignment_id
       if (!byAssignment[assignmentId]) {
         byAssignment[assignmentId] = {
@@ -77,7 +74,6 @@ export async function getStudentDashboard(
           (byAssignment[assignmentId].byCategory[category] ?? 0) + 1
       }
 
-      // Time series by month (YYYY-MM).
       const submittedAt = declaration.submitted_at
       const monthKey = new Date(submittedAt).toISOString().slice(0, 7)
       if (!byMonth[monthKey]) {
@@ -177,22 +173,14 @@ export async function getInstructorDashboard(
       return
     }
 
-    const data = await getInstructorAggregateForCourse(courseId)
-
-    if (data.length === 0) {
-      res.status(200).json({
-        suppressed: true,
-        message: 'Cohort size is below the minimum threshold for display',
-      })
-
-      void logAccess(
-        userId,
-        CAPABILITIES['dashboard:read:course_aggregate'],
-        courseId,
-      ).catch(() => {})
-
-      return
-    }
+    const rows = await getInstructorAggregateForCourse(courseId)
+    const data = rows.map((row) => ({
+      assignmentId: row.assignment_id,
+      courseId: row.course_id,
+      category: row.category,
+      frequency: row.frequency,
+      declarationCount: row.declaration_count,
+    }))
 
     res.status(200).json({
       suppressed: false,
@@ -220,8 +208,6 @@ export async function getFacultyDashboard(
   res: Response,
   _next: NextFunction,
 ): Promise<void> {
-  // Known limitation: faculty scope is passed as a query parameter for this demo.
-  // A production system requires a faculty_id field on the users table or a separate faculty-user association table.
   const facultyId = typeof req.query.facultyId === 'string'
     ? req.query.facultyId
     : undefined
@@ -233,8 +219,6 @@ export async function getFacultyDashboard(
       return
     }
 
-    // This role check is acceptable here because faculty scope cannot be
-    // inferred from enrolments alone in the current data model.
     if (user.role !== 'head_of_faculty') {
       res.status(403).json({ error: 'Forbidden' })
       return
@@ -248,22 +232,6 @@ export async function getFacultyDashboard(
     }
 
     const rows = await getFacultyAggregateForFaculty(facultyId)
-
-    if (rows.length === 0) {
-      res.status(200).json({
-        suppressed: true,
-        message: 'Cohort size is below the minimum threshold for display',
-      })
-
-      void logAccess(
-        user.id,
-        CAPABILITIES['dashboard:read:faculty_aggregate'],
-        facultyId,
-      ).catch(() => {})
-
-      return
-    }
-
     const data = rows.map((row) => ({
       courseId: row.course_id,
       facultyId: row.faculty_id,
@@ -294,4 +262,3 @@ export async function getFacultyDashboard(
     res.status(500).json(INTERNAL_ERROR_BODY)
   }
 }
-

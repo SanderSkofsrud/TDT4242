@@ -50,7 +50,7 @@ function CourseSection({
   return (
     <section className="card-elevated mb-8" key={courseId}>
       <h2 className="text-xl font-bold text-slate-900 mb-4">
-        {courseCode} — {courseName}
+        {courseCode} - {courseName}
       </h2>
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
@@ -94,7 +94,7 @@ export default function FacultyDashboard() {
   }
 
   if (isLoading) {
-    return <LoadingSpinner message="Loading faculty dashboard…" />
+    return <LoadingSpinner message="Loading faculty dashboard..." />
   }
 
   if (error) {
@@ -144,18 +144,27 @@ export default function FacultyDashboard() {
       </h1>
       <p className="text-slate-600 mb-8">
         Aggregate AI usage patterns across all courses in your faculty. No individual student
-        declarations or identifiers are shown — only counts with privacy suppression (k≥5).
+        declarations or identifiers are shown - only counts with privacy suppression (k at least 5).
       </p>
       <div className="space-y-2 mb-8">
-        {Array.from(byCourse.entries()).map(([courseId, { rows, courseCode, courseName }]) => (
-          <CourseSection
-            key={courseId}
-            courseId={courseId}
-            courseCode={courseCode}
-            courseName={courseName}
-            rows={rows}
-          />
-        ))}
+        {byCourse.size === 0 ? (
+          <div className="card-elevated">
+            <p className="text-slate-600">
+              No course-level rows can be shown at the current privacy threshold. Only suppressed
+              aggregate counts are available.
+            </p>
+          </div>
+        ) : (
+          Array.from(byCourse.entries()).map(([courseId, { rows, courseCode, courseName }]) => (
+            <CourseSection
+              key={courseId}
+              courseId={courseId}
+              courseCode={courseCode}
+              courseName={courseName}
+              rows={rows}
+            />
+          ))
+        )}
       </div>
     </div>
   )

@@ -22,8 +22,13 @@ export function useGuidance(assignmentId: string) {
           setGuidance(data)
         }
       } catch (err) {
+        const status = (err as { response?: { status?: number } })?.response?.status
         if (!cancelled) {
-          setError(err as Error)
+          if (status === 404) {
+            setGuidance(null)
+          } else {
+            setError(err as Error)
+          }
         }
       } finally {
         if (!cancelled) {

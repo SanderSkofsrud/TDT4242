@@ -26,9 +26,18 @@ const REQUIRED_COLUMNS: Array<{
 const REQUIRED_VIEWS: Array<{
   viewName: string
   requiredSnippet: string
+  forbiddenSnippet?: string
 }> = [
-  { viewName: 'v_instructor_aggregate', requiredSnippet: 'sharing_preferences' },
-  { viewName: 'v_faculty_aggregate', requiredSnippet: 'course_code' },
+  {
+    viewName: 'v_instructor_aggregate',
+    requiredSnippet: 'sharing_preferences',
+    forbiddenSnippet: 'having',
+  },
+  {
+    viewName: 'v_faculty_aggregate',
+    requiredSnippet: 'sharing_preferences',
+    forbiddenSnippet: 'having',
+  },
 ]
 
 const MAX_RETRIES = 10
@@ -73,7 +82,11 @@ async function getMissingColumns(): Promise<Array<{ table: string; column: strin
   )
 }
 
-async function getMissingViews(): Promise<Array<{ viewName: string; requiredSnippet: string }>> {
+async function getMissingViews(): Promise<Array<{
+  viewName: string
+  requiredSnippet: string
+  forbiddenSnippet?: string
+}>> {
   if (REQUIRED_VIEWS.length === 0) return []
 
   const viewNames = REQUIRED_VIEWS.map((item) => item.viewName)
@@ -93,7 +106,12 @@ async function getMissingViews(): Promise<Array<{ viewName: string; requiredSnip
   return REQUIRED_VIEWS.filter((item) => {
     const definition = definitionByView.get(item.viewName)
     if (!definition) return true
-    return !definition.includes(item.requiredSnippet)
+    const lowerDef = definition.toLowerCase()
+    const missingRequired = !lowerDef.includes(item.requiredSnippet.toLowerCase())
+    const hasForbidden = item.forbiddenSnippet
+      ? lowerDef.includes(item.forbiddenSnippet.toLowerCase())
+      : false
+    return missingRequired || hasForbidden
   })
 }
 
