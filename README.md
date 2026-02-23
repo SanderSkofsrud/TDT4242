@@ -170,6 +170,10 @@ npm run dev:frontend
 - `POST /api/assignments/:assignmentId/guidance`
 - `PUT /api/assignments/:assignmentId/guidance`
 
+### Assignments
+
+- `GET /api/assignments`
+
 ### Dashboard
 
 - `GET /api/dashboard/student`

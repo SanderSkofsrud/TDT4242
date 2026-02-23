@@ -1,4 +1,5 @@
 export const CAPABILITIES = {
+  'assignment:read:own': 'assignment:read:own',
   'declaration:write': 'declaration:write',
   'declaration:read:own': 'declaration:read:own',
   'declaration:read:shared': 'declaration:read:shared',
@@ -20,6 +21,7 @@ export type Role = 'student' | 'instructor' | 'head_of_faculty' | 'admin'
 
 export const ROLE_CAPABILITIES: Record<Role, Capability[]> = {
   student: [
+    'assignment:read:own',
     'declaration:write',
     'declaration:read:own',
     'dashboard:read:own',

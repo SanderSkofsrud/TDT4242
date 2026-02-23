@@ -3,6 +3,7 @@ import express from 'express'
 import noTelemetry from './middleware/noTelemetry.js'
 import userRoutes from './routes/user.js'
 import assignmentGuidanceRoutes from './routes/assignmentGuidance.js'
+import assignmentRoutes from './routes/assignments.js'
 import declarationRoutes from './routes/declarations.js'
 import feedbackRoutes from './routes/feedback.js'
 import dashboardRoutes from './routes/dashboard.js'
@@ -31,6 +32,7 @@ app.get('/health', (_req, res) => {
 
 app.use(userRoutes)
 app.use(assignmentGuidanceRoutes)
+app.use(assignmentRoutes)
 app.use(declarationRoutes)
 app.use(feedbackRoutes)
 app.use(dashboardRoutes)
