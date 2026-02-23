@@ -73,7 +73,7 @@ export async function runSeedData(): Promise<void> {
       {
         id: IDS.course,
         code: 'TDT4242',
-        name: 'Software Architecture & AI Compliance Demo Course',
+        name: 'Advanced Software Engineering',
       },
       {
         id: IDS.course2,
@@ -235,10 +235,17 @@ export async function runSeedData(): Promise<void> {
     let declarationIndex = 0
     for (const assignment of assignments) {
       for (const studentId of declarationStudents) {
+        // Leave some assignments without declarations to simulate incomplete submissions.
+        if (declarationIndex % 4 === 0) {
+          declarationIndex += 1
+          continue
+        }
+
         const categories = categorySets[declarationIndex % categorySets.length]
         const frequency = frequencies[declarationIndex % frequencies.length]
         const tools = toolsUsed[declarationIndex % toolsUsed.length]
         const contextText = `Used AI for ${categories.join(', ')} with ${frequency} frequency.`
+        const submittedDaysAgo = 10 + (declarationIndex % 160)
 
         await client.query(
           `INSERT INTO declarations (
@@ -249,6 +256,7 @@ export async function runSeedData(): Promise<void> {
              frequency,
              context_text,
              policy_version,
+             submitted_at,
              expires_at
            )
            VALUES (
@@ -259,10 +267,11 @@ export async function runSeedData(): Promise<void> {
              $5,
              $6,
              1,
-             NOW() + INTERVAL '180 days'
+             NOW() - ($7 || ' days')::interval,
+             NOW() - ($7 || ' days')::interval + INTERVAL '180 days'
            )
            ON CONFLICT ON CONSTRAINT declarations_unique_student_assignment DO NOTHING`,
-          [studentId, assignment.id, tools, categories, frequency, contextText],
+          [studentId, assignment.id, tools, categories, frequency, contextText, String(submittedDaysAgo)],
         )
 
         declarationIndex += 1
