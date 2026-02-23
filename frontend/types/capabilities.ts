@@ -1,5 +1,6 @@
 export const CAPABILITIES = {
   'assignment:read:own': 'assignment:read:own',
+  'assignment:read:course': 'assignment:read:course',
   'declaration:write': 'declaration:write',
   'declaration:read:own': 'declaration:read:own',
   'declaration:read:shared': 'declaration:read:shared',
@@ -28,6 +29,7 @@ export const ROLE_CAPABILITIES: Record<string, Capability[]> = {
     'guidance:read',
   ],
   instructor: [
+    'assignment:read:course',
     'guidance:write',
     'guidance:read',
     'dashboard:read:course_aggregate',
