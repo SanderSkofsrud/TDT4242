@@ -17,6 +17,9 @@ const InstructorDashboardHome = lazy(
 const InstructorDashboard = lazy(
   () => import('./pages/InstructorDashboard'),
 )
+const InstructorAssignments = lazy(
+  () => import('./pages/InstructorAssignments'),
+)
 const FacultyDashboard = lazy(() => import('./pages/FacultyDashboard'))
 const AssignmentGuidance = lazy(
   () => import('./pages/AssignmentGuidance'),
@@ -150,6 +153,14 @@ export function AppRouter() {
             element={
               <ProtectedRoute requiredCapability="dashboard:read:course_aggregate">
                 <InstructorDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/instructor/:courseId/assignments"
+            element={
+              <ProtectedRoute requiredCapability="assignment:read:course">
+                <InstructorAssignments />
               </ProtectedRoute>
             }
           />

@@ -30,6 +30,24 @@ export async function getStudentDashboard(
 
     const byCategory: Record<string, number> = {}
     const byFrequency: Record<string, number> = {}
+    const byAssignment: Record<
+      string,
+      {
+        assignmentId: string
+        totalDeclarations: number
+        byCategory: Record<string, number>
+        byFrequency: Record<string, number>
+      }
+    > = {}
+    const byMonth: Record<
+      string,
+      {
+        month: string
+        totalDeclarations: number
+        byCategory: Record<string, number>
+        byFrequency: Record<string, number>
+      }
+    > = {}
 
     for (const declaration of declarations) {
       // Count by category (categories is an array per declaration).
@@ -40,7 +58,51 @@ export async function getStudentDashboard(
       // Count by frequency (single value per declaration).
       const freq = declaration.frequency
       byFrequency[freq] = (byFrequency[freq] ?? 0) + 1
+
+      // Per-assignment aggregates.
+      const assignmentId = declaration.assignment_id
+      if (!byAssignment[assignmentId]) {
+        byAssignment[assignmentId] = {
+          assignmentId,
+          totalDeclarations: 0,
+          byCategory: {},
+          byFrequency: {},
+        }
+      }
+      byAssignment[assignmentId].totalDeclarations += 1
+      byAssignment[assignmentId].byFrequency[freq] =
+        (byAssignment[assignmentId].byFrequency[freq] ?? 0) + 1
+      for (const category of declaration.categories) {
+        byAssignment[assignmentId].byCategory[category] =
+          (byAssignment[assignmentId].byCategory[category] ?? 0) + 1
+      }
+
+      // Time series by month (YYYY-MM).
+      const submittedAt = declaration.submitted_at
+      const monthKey = new Date(submittedAt).toISOString().slice(0, 7)
+      if (!byMonth[monthKey]) {
+        byMonth[monthKey] = {
+          month: monthKey,
+          totalDeclarations: 0,
+          byCategory: {},
+          byFrequency: {},
+        }
+      }
+      byMonth[monthKey].totalDeclarations += 1
+      byMonth[monthKey].byFrequency[freq] =
+        (byMonth[monthKey].byFrequency[freq] ?? 0) + 1
+      for (const category of declaration.categories) {
+        byMonth[monthKey].byCategory[category] =
+          (byMonth[monthKey].byCategory[category] ?? 0) + 1
+      }
     }
+
+    const perAssignment = Object.values(byAssignment).sort((a, b) =>
+      a.assignmentId.localeCompare(b.assignmentId),
+    )
+    const perMonth = Object.values(byMonth).sort((a, b) =>
+      a.month.localeCompare(b.month),
+    )
 
     const responseBody = {
       declarations,
@@ -48,6 +110,8 @@ export async function getStudentDashboard(
         totalDeclarations: declarations.length,
         byCategory,
         byFrequency,
+        perAssignment,
+        perMonth,
       },
     }
 

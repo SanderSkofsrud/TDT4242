@@ -42,19 +42,33 @@ export default function InstructorDashboardHome() {
       {courses.length === 0 ? (
         <p className="text-slate-600">You are not assigned as instructor to any courses yet.</p>
       ) : (
-        <ul className="space-y-3">
+        <div className="space-y-4">
           {courses.map((course) => (
-            <li key={course.id}>
-              <Link
-                to={`/dashboard/instructor/${course.id}`}
-                className="card-elevated block transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover"
-              >
-                <span className="font-semibold text-slate-900">{course.name}</span>
-                <span className="text-slate-500 ml-2">({course.code})</span>
-              </Link>
-            </li>
+            <div
+              key={course.id}
+              className="card-elevated flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div>
+                <p className="font-semibold text-slate-900">{course.name}</p>
+                <p className="text-slate-500">{course.code}</p>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  to={`/dashboard/instructor/${course.id}`}
+                  className="btn-secondary"
+                >
+                  View dashboard
+                </Link>
+                <Link
+                  to={`/dashboard/instructor/${course.id}/assignments`}
+                  className="btn-primary"
+                >
+                  Manage assignments
+                </Link>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   )

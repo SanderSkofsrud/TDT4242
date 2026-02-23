@@ -39,6 +39,8 @@ export interface AssignmentGuidance {
   assignment_id: string
   permitted_text: string
   prohibited_text: string
+  permitted_categories: DeclarationCategory[] | null
+  prohibited_categories: DeclarationCategory[] | null
   examples: AssignmentGuidanceExamples | null
   created_by: string
   locked_at: Date | null

@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react'
 import type { AssignmentGuidance } from '../../types/models'
+import { AI_CATEGORIES } from '../../utils/constants'
 
 interface GuidanceFormProps {
   initialValues?: AssignmentGuidance | null
   onSave: (data: {
     permittedText: string
     prohibitedText: string
+    permittedCategories?: AssignmentGuidance['permittedCategories']
+    prohibitedCategories?: AssignmentGuidance['prohibitedCategories']
     examples?: AssignmentGuidance['examples']
   }) => Promise<void>
   isSaving: boolean
@@ -18,6 +21,12 @@ export function GuidanceForm({
 }: GuidanceFormProps) {
   const [permittedText, setPermittedText] = useState(initialValues?.permittedText ?? '')
   const [prohibitedText, setProhibitedText] = useState(initialValues?.prohibitedText ?? '')
+  const [permittedCategories, setPermittedCategories] = useState<string[]>(
+    initialValues?.permittedCategories ?? [],
+  )
+  const [prohibitedCategories, setProhibitedCategories] = useState<string[]>(
+    initialValues?.prohibitedCategories ?? [],
+  )
   const [permittedExamples, setPermittedExamples] = useState<string[]>(
     initialValues?.examples?.permitted ?? [],
   )
@@ -29,6 +38,8 @@ export function GuidanceForm({
     if (initialValues) {
       setPermittedText(initialValues.permittedText)
       setProhibitedText(initialValues.prohibitedText)
+      setPermittedCategories(initialValues.permittedCategories ?? [])
+      setProhibitedCategories(initialValues.prohibitedCategories ?? [])
       setPermittedExamples(initialValues.examples?.permitted ?? [])
       setProhibitedExamples(initialValues.examples?.prohibited ?? [])
     }
@@ -57,11 +68,25 @@ export function GuidanceForm({
     onSave({
       permittedText,
       prohibitedText,
+      permittedCategories,
+      prohibitedCategories,
       examples: {
         permitted: permittedExamples.filter(Boolean),
         prohibited: prohibitedExamples.filter(Boolean),
       },
     })
+  }
+
+  const toggleCategory = (
+    categoryValue: string,
+    values: string[],
+    setValues: (next: string[]) => void,
+  ) => {
+    if (values.includes(categoryValue)) {
+      setValues(values.filter((v) => v !== categoryValue))
+    } else {
+      setValues([...values, categoryValue])
+    }
   }
 
   return (
@@ -90,6 +115,50 @@ export function GuidanceForm({
           className="input-field mt-1"
         />
       </div>
+
+      <fieldset className="border border-slate-200 rounded-lg p-4">
+        <legend className="label-field">Permitted categories</legend>
+        <p className="text-sm text-slate-500 mt-1">
+          Select the AI usage categories that are explicitly permitted for this assignment.
+        </p>
+        <div className="grid gap-2 mt-3 sm:grid-cols-2">
+          {AI_CATEGORIES.map(({ value, label }) => (
+            <label key={value} className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={permittedCategories.includes(value)}
+                onChange={() =>
+                  toggleCategory(value, permittedCategories, setPermittedCategories)
+                }
+                className="rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+              />
+              <span className="text-slate-700">{label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset className="border border-slate-200 rounded-lg p-4">
+        <legend className="label-field">Prohibited categories</legend>
+        <p className="text-sm text-slate-500 mt-1">
+          Select the AI usage categories that are explicitly prohibited for this assignment.
+        </p>
+        <div className="grid gap-2 mt-3 sm:grid-cols-2">
+          {AI_CATEGORIES.map(({ value, label }) => (
+            <label key={value} className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={prohibitedCategories.includes(value)}
+                onChange={() =>
+                  toggleCategory(value, prohibitedCategories, setProhibitedCategories)
+                }
+                className="rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+              />
+              <span className="text-slate-700">{label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
 
       <fieldset className="border border-slate-200 rounded-lg p-4">
         <legend className="label-field">Permitted examples</legend>

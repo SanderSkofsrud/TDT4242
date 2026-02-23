@@ -10,6 +10,12 @@ import { getCurrentPolicy } from '../models/policyDocument.js'
 import { logAccess } from '../models/accessLog.js'
 
 const INTERNAL_ERROR_BODY = { error: 'Internal server error' }
+const CATEGORY_LABELS: Record<string, string> = {
+  explanation: 'Explanation',
+  structure: 'Structure',
+  rephrasing: 'Rephrasing',
+  code_assistance: 'Code assistance',
+}
 
 export async function getFeedback(
   req: Request,
@@ -51,6 +57,34 @@ export async function getFeedback(
 
     const declarationCategories = declaration.categories
 
+    const mismatches: { category: string; message: string }[] = []
+
+    if (guidance) {
+      const permitted = guidance.permitted_categories ?? []
+      const prohibited = guidance.prohibited_categories ?? []
+
+      for (const category of declarationCategories) {
+        if (prohibited.includes(category)) {
+          mismatches.push({
+            category,
+            message:
+              `Your declaration includes ${CATEGORY_LABELS[category] ?? category}, ` +
+              'which is marked as prohibited in the assignment guidance.',
+          })
+          continue
+        }
+
+        if (permitted.length > 0 && !permitted.includes(category)) {
+          mismatches.push({
+            category,
+            message:
+              `Your declaration includes ${CATEGORY_LABELS[category] ?? category}, ` +
+              'but this category is not listed as permitted in the assignment guidance.',
+          })
+        }
+      }
+    }
+
     const filteredTemplates = templates
       .filter((template) => {
         if (template.category === null) {
@@ -75,9 +109,12 @@ export async function getFeedback(
         ? {
             permittedText: guidance.permitted_text,
             prohibitedText: guidance.prohibited_text,
+            permittedCategories: guidance.permitted_categories,
+            prohibitedCategories: guidance.prohibited_categories,
             examples: guidance.examples,
           }
         : null,
+      mismatches,
       feedbackTemplates: filteredTemplates,
       policyVersion: declaration.policy_version,
       policyFilePath: currentPolicy.file_path,

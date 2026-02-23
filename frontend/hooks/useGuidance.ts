@@ -47,6 +47,8 @@ export function useGuidanceForm(assignmentId: string) {
   const save = async (data: {
     permittedText: string
     prohibitedText: string
+    permittedCategories?: AssignmentGuidance['permittedCategories']
+    prohibitedCategories?: AssignmentGuidance['prohibitedCategories']
     examples?: AssignmentGuidance['examples']
   }) => {
     setIsSaving(true)

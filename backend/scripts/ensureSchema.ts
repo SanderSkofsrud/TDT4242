@@ -15,6 +15,14 @@ const REQUIRED_TABLES = [
   'access_log',
 ]
 
+const REQUIRED_COLUMNS: Array<{
+  table: string
+  column: string
+}> = [
+  { table: 'assignment_guidance', column: 'permitted_categories' },
+  { table: 'assignment_guidance', column: 'prohibited_categories' },
+]
+
 const MAX_RETRIES = 10
 const RETRY_DELAY_MS = 3000
 
@@ -35,12 +43,49 @@ async function getMissingTables(): Promise<string[]> {
   return REQUIRED_TABLES.filter((tableName) => !existing.has(tableName))
 }
 
+async function getMissingColumns(): Promise<Array<{ table: string; column: string }>> {
+  if (REQUIRED_COLUMNS.length === 0) return []
+
+  const tables = Array.from(new Set(REQUIRED_COLUMNS.map((item) => item.table)))
+  const result = await pool.query<{ table_name: string; column_name: string }>(
+    `
+    SELECT table_name, column_name
+    FROM information_schema.columns
+    WHERE table_schema = 'public' AND table_name = ANY($1::text[])
+  `,
+    [tables],
+  )
+
+  const existing = new Set(
+    result.rows.map((row) => `${row.table_name}:${row.column_name}`),
+  )
+
+  return REQUIRED_COLUMNS.filter(
+    (item) => !existing.has(`${item.table}:${item.column}`),
+  )
+}
+
 async function checkWithRetry(): Promise<string[]> {
   let lastError: unknown = null
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt += 1) {
     try {
-      return await getMissingTables()
+      const [missingTables, missingColumns] = await Promise.all([
+        getMissingTables(),
+        getMissingColumns(),
+      ])
+
+      if (missingColumns.length > 0) {
+        const details = missingColumns
+          .map((item) => `${item.table}.${item.column}`)
+          .join(', ')
+        // eslint-disable-next-line no-console
+        console.log(`[schema] Missing columns detected: ${details}`)
+      }
+
+      return missingTables.length > 0 || missingColumns.length > 0
+        ? ['schema_update_required']
+        : []
     } catch (error) {
       lastError = error
       const message = error instanceof Error ? error.message : String(error)
@@ -59,10 +104,7 @@ async function main(): Promise<void> {
 
     if (missingTables.length > 0) {
       // eslint-disable-next-line no-console
-      console.log(`[schema] Missing tables detected: ${missingTables.join(', ')}`)
-      // eslint-disable-next-line no-console
       console.log('[schema] Running migrations...')
-
       await runMigrations()
     } else {
       // eslint-disable-next-line no-console

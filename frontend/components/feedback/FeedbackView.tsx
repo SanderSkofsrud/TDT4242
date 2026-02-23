@@ -6,8 +6,15 @@ interface FeedbackViewProps {
 }
 
 export function FeedbackView({ feedback }: FeedbackViewProps) {
-  const { categories, frequency, guidance, feedbackTemplates, policyVersion, policyFilePath } =
-    feedback
+  const {
+    categories,
+    frequency,
+    guidance,
+    mismatches,
+    feedbackTemplates,
+    policyVersion,
+    policyFilePath,
+  } = feedback
 
   return (
     <div className="container-app py-12 sm:py-16">
@@ -36,6 +43,20 @@ export function FeedbackView({ feedback }: FeedbackViewProps) {
           <ul className="list-disc list-inside text-slate-600 space-y-1">
             {feedbackTemplates.map((t, i) => (
               <li key={i}>{t.templateText}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {mismatches && mismatches.length > 0 && (
+        <section className="card-elevated mb-6">
+          <h2 className="text-xl font-bold text-slate-900 mb-3">Potential mismatches</h2>
+          <p className="text-slate-600 mb-3">
+            These observations are provided for reflection and do not represent any penalties.
+          </p>
+          <ul className="list-disc list-inside text-slate-600 space-y-1">
+            {mismatches.map((item, i) => (
+              <li key={`${item.category}-${i}`}>{item.message}</li>
             ))}
           </ul>
         </section>

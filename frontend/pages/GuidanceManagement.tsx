@@ -14,6 +14,8 @@ export default function GuidanceManagement() {
   const handleSave = async (data: {
     permittedText: string
     prohibitedText: string
+    permittedCategories?: string[] | null
+    prohibitedCategories?: string[] | null
     examples?: { permitted: string[]; prohibited: string[] } | null
   }) => {
     await save(data)

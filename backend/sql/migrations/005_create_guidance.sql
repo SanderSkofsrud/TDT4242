@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS assignment_guidance (
   assignment_id UUID NOT NULL UNIQUE REFERENCES assignments(id) ON DELETE CASCADE,
   permitted_text TEXT NOT NULL,
   prohibited_text TEXT NOT NULL,
+  permitted_categories TEXT[],
+  prohibited_categories TEXT[],
   examples JSONB,
   created_by UUID NOT NULL REFERENCES users(id),
   locked_at TIMESTAMPTZ,

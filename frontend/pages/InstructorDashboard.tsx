@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import { LoadingSpinner } from '../components/common/LoadingSpinner'
 import { AggregateTable } from '../components/dashboard/AggregateTable'
@@ -83,6 +83,14 @@ export default function InstructorDashboard() {
         >
           Log out
         </button>
+      </div>
+      <div className="mb-6">
+        <Link
+          to={`/dashboard/instructor/${courseId}/assignments`}
+          className="btn-primary"
+        >
+          Manage assignment guidance
+        </Link>
       </div>
       <AggregateTable data={data.data} />
     </div>

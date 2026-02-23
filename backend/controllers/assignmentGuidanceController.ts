@@ -52,7 +52,13 @@ export async function createGuidance(
   _next: NextFunction,
 ): Promise<void> {
   const assignmentId = req.params.assignmentId as string
-  const { permittedText, prohibitedText, examples } = req.body
+  const {
+    permittedText,
+    prohibitedText,
+    permittedCategories,
+    prohibitedCategories,
+    examples,
+  } = req.body
 
   try {
     const assignment = await findAssignmentById(assignmentId)
@@ -90,6 +96,8 @@ export async function createGuidance(
       assignment_id: assignmentId,
       permitted_text: permittedText,
       prohibited_text: prohibitedText,
+      permitted_categories: permittedCategories ?? null,
+      prohibited_categories: prohibitedCategories ?? null,
       examples: examples ?? null,
       created_by: userId,
     })
@@ -117,7 +125,13 @@ export async function updateGuidance(
   _next: NextFunction,
 ): Promise<void> {
   const assignmentId = req.params.assignmentId as string
-  const { permittedText, prohibitedText, examples } = req.body
+  const {
+    permittedText,
+    prohibitedText,
+    permittedCategories,
+    prohibitedCategories,
+    examples,
+  } = req.body
 
   try {
     const assignment = await findAssignmentById(assignmentId)
@@ -146,6 +160,8 @@ export async function updateGuidance(
     const updated = await updateGuidanceModel(assignmentId, {
       permitted_text: permittedText,
       prohibited_text: prohibitedText,
+      permitted_categories: permittedCategories ?? null,
+      prohibited_categories: prohibitedCategories ?? null,
       examples: examples ?? null,
     })
 

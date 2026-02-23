@@ -1,6 +1,9 @@
 import { Router } from 'express'
 
-import { getStudentAssignments } from '../controllers/assignmentsController.js'
+import {
+  getStudentAssignments,
+  getInstructorAssignmentsForCourse,
+} from '../controllers/assignmentsController.js'
 import { authenticate } from '../middleware/authenticate.js'
 import { requireCapability } from '../middleware/rbac.js'
 import { CAPABILITIES } from '../config/capabilities.js'
@@ -12,6 +15,13 @@ router.get(
   authenticate,
   requireCapability(CAPABILITIES['assignment:read:own']),
   getStudentAssignments,
+)
+
+router.get(
+  '/api/instructor/:courseId/assignments',
+  authenticate,
+  requireCapability(CAPABILITIES['assignment:read:course']),
+  getInstructorAssignmentsForCourse,
 )
 
 export default router

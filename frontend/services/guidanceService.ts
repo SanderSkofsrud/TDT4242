@@ -15,6 +15,8 @@ export async function createGuidance(
   data: {
     permittedText: string
     prohibitedText: string
+    permittedCategories?: AssignmentGuidance['permittedCategories']
+    prohibitedCategories?: AssignmentGuidance['prohibitedCategories']
     examples?: AssignmentGuidance['examples']
   },
 ): Promise<AssignmentGuidance> {
@@ -30,6 +32,8 @@ export async function updateGuidance(
   data: {
     permittedText: string
     prohibitedText: string
+    permittedCategories?: AssignmentGuidance['permittedCategories']
+    prohibitedCategories?: AssignmentGuidance['prohibitedCategories']
     examples?: AssignmentGuidance['examples']
   },
 ): Promise<AssignmentGuidance> {

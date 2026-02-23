@@ -4,6 +4,10 @@ import { LoadingSpinner } from '../components/common/LoadingSpinner'
 import { PrivacyBadge } from '../components/common/PrivacyBadge'
 import { UsageChart } from '../components/dashboard/UsageChart'
 import { CategoryBreakdown } from '../components/dashboard/CategoryBreakdown'
+import { MonthlyTrendChart } from '../components/dashboard/MonthlyTrendChart'
+import { AssignmentBreakdownTable } from '../components/dashboard/AssignmentBreakdownTable'
+import { MonthlyBreakdownTable } from '../components/dashboard/MonthlyBreakdownTable'
+import { CategoryTrendChart } from '../components/dashboard/CategoryTrendChart'
 import { useStudentDashboard } from '../hooks/useDashboard'
 import { useStudentAssignments } from '../hooks/useAssignments'
 import { useAuth } from '../context/AuthContext'
@@ -47,6 +51,11 @@ export default function StudentDashboard() {
   const { declarations, summary } = data
   const assignments = assignmentsData?.assignments ?? []
   const pendingAssignments = assignments.filter((assignment) => !assignment.declaration)
+  const assignmentTitleById = new Map(assignments.map((a) => [a.id, a.title]))
+  const perAssignmentRows = summary.perAssignment.map((row) => ({
+    ...row,
+    title: assignmentTitleById.get(row.assignmentId),
+  }))
 
   return (
     <div className="container-app py-12 sm:py-16">
@@ -141,6 +150,26 @@ export default function StudentDashboard() {
       <section className="card-elevated mb-8">
         <h2 className="text-xl font-bold text-slate-900 mb-4">Usage overview</h2>
         <UsageChart byCategory={summary.byCategory} />
+      </section>
+
+      <section className="card-elevated mb-8">
+        <h2 className="text-xl font-bold text-slate-900 mb-4">Monthly usage trend</h2>
+        <MonthlyTrendChart data={summary.perMonth} />
+      </section>
+
+      <section className="card-elevated mb-8">
+        <h2 className="text-xl font-bold text-slate-900 mb-4">Monthly category trends</h2>
+        <CategoryTrendChart data={summary.perMonth} />
+      </section>
+
+      <section className="card-elevated mb-8">
+        <h2 className="text-xl font-bold text-slate-900 mb-4">Monthly breakdown</h2>
+        <MonthlyBreakdownTable rows={summary.perMonth} />
+      </section>
+
+      <section className="card-elevated mb-8">
+        <h2 className="text-xl font-bold text-slate-900 mb-4">Usage by assignment</h2>
+        <AssignmentBreakdownTable rows={perAssignmentRows} />
       </section>
 
       <section className="mb-8">

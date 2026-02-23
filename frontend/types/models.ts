@@ -41,6 +41,8 @@ export interface AssignmentGuidance {
   assignmentId: string
   permittedText: string
   prohibitedText: string
+  permittedCategories: Array<'explanation' | 'structure' | 'rephrasing' | 'code_assistance'> | null
+  prohibitedCategories: Array<'explanation' | 'structure' | 'rephrasing' | 'code_assistance'> | null
   examples: {
     permitted: string[]
     prohibited: string[]
@@ -88,8 +90,14 @@ export interface FeedbackResponse {
   guidance: {
     permittedText: string
     prohibitedText: string
+    permittedCategories: string[] | null
+    prohibitedCategories: string[] | null
     examples: object | null
   } | null
+  mismatches: Array<{
+    category: string
+    message: string
+  }>
   feedbackTemplates: FeedbackTemplate[]
   policyVersion: number
   policyFilePath: string
@@ -101,11 +109,39 @@ export interface StudentDashboardResponse {
     totalDeclarations: number
     byCategory: Record<string, number>
     byFrequency: Record<string, number>
+    perAssignment: Array<{
+      assignmentId: string
+      totalDeclarations: number
+      byCategory: Record<string, number>
+      byFrequency: Record<string, number>
+    }>
+    perMonth: Array<{
+      month: string
+      totalDeclarations: number
+      byCategory: Record<string, number>
+      byFrequency: Record<string, number>
+    }>
   }
 }
 
 export interface StudentAssignmentsResponse {
   assignments: StudentAssignment[]
+}
+
+export interface InstructorAssignment {
+  id: string
+  courseId: string
+  title: string
+  dueDate: string
+  guidance: {
+    id: string
+    lockedAt: string | null
+  } | null
+}
+
+export interface InstructorAssignmentsResponse {
+  courseId: string
+  assignments: InstructorAssignment[]
 }
 
 export interface InstructorAggregateRow {

@@ -5,17 +5,33 @@ interface GuidanceCardProps {
 }
 
 export function GuidanceCard({ guidance }: GuidanceCardProps) {
-  const { permittedText, prohibitedText, examples } = guidance
+  const {
+    permittedText,
+    prohibitedText,
+    permittedCategories,
+    prohibitedCategories,
+    examples,
+  } = guidance
 
   return (
     <div className="card-elevated space-y-6">
       <section>
         <h2 className="text-xl font-bold text-slate-900 mb-2">Permitted use</h2>
         <p className="text-slate-600">{permittedText}</p>
+        {permittedCategories && permittedCategories.length > 0 && (
+          <p className="text-sm text-slate-500 mt-2">
+            Permitted categories: {permittedCategories.join(', ')}
+          </p>
+        )}
       </section>
       <section>
         <h2 className="text-xl font-bold text-slate-900 mb-2">Prohibited use</h2>
         <p className="text-slate-600">{prohibitedText}</p>
+        {prohibitedCategories && prohibitedCategories.length > 0 && (
+          <p className="text-sm text-slate-500 mt-2">
+            Prohibited categories: {prohibitedCategories.join(', ')}
+          </p>
+        )}
       </section>
       {examples && (
         <>

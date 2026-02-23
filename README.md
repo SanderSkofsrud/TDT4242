@@ -173,6 +173,7 @@ npm run dev:frontend
 ### Assignments
 
 - `GET /api/assignments`
+- `GET /api/instructor/:courseId/assignments`
 
 ### Dashboard
 
