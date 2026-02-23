@@ -24,18 +24,53 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 
 let initialToken: string | null = null
 
+if (typeof window !== 'undefined') {
+  initialToken = window.localStorage.getItem('authToken')
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [token, setTokenState] = useState<string | null>(initialToken)
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    // Token is kept in memory only. On full page refresh, the user must log in
-    // again; this is an intentional privacy trade-off.
     if (token) {
       setAuthToken(token)
+    } else {
+      setAuthToken(null)
     }
   }, [token])
+
+  useEffect(() => {
+    if (!initialToken) return
+
+    const payload = decodeToken(initialToken)
+
+    if (!payload.sub || !payload.role || payload.privacyAckVersion == null) {
+      if (typeof window !== 'undefined') {
+        window.localStorage.removeItem('authToken')
+      }
+      initialToken = null
+      return
+    }
+
+    if (payload.exp && Date.now() >= payload.exp * 1000) {
+      if (typeof window !== 'undefined') {
+        window.localStorage.removeItem('authToken')
+      }
+      initialToken = null
+      return
+    }
+
+    const authUser: User = {
+      id: payload.sub,
+      role: payload.role,
+      privacyAckVersion: payload.privacyAckVersion,
+    }
+
+    setUser(authUser)
+    setTokenState(initialToken)
+  }, [])
 
   useEffect(() => {
     registerUnauthorisedHandler(() => {
@@ -50,6 +85,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     sub?: string
     role?: User['role']
     privacyAckVersion?: number
+    exp?: number
   } => {
     try {
       const [, payload] = jwt.split('.')
@@ -68,6 +104,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setTokenState(newToken)
         setAuthToken(newToken)
         initialToken = newToken
+
+        if (typeof window !== 'undefined') {
+          window.localStorage.setItem('authToken', newToken)
+          document.cookie = `authToken=${newToken}; max-age=${60 * 60}; path=/`
+        }
 
         const payload = decodeToken(newToken)
         if (!payload.sub || !payload.role || payload.privacyAckVersion == null) {
@@ -95,6 +136,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setAuthToken(null)
     initialToken = null
     setUser(null)
+
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem('authToken')
+      document.cookie = 'authToken=; Max-Age=0; path=/'
+    }
   }, [])
 
   const acknowledgePrivacy = useCallback(

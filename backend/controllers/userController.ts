@@ -106,10 +106,22 @@ export async function login(
         privacyAckVersion: user.privacy_ack_version,
       },
       secret,
-      { expiresIn: '8h' },
+      { expiresIn: '1h' },
     )
 
-    res.status(200).json({ token })
+    // Issue token as JSON response for the SPA and also as a cookie so
+    // that the browser can persist it across reloads. The cookie is
+    // limited to 1 hour to match the JWT expiry.
+    res
+      .cookie('authToken', token, {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 1000,
+        path: '/',
+      })
+      .status(200)
+      .json({ token })
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
       // eslint-disable-next-line no-console
