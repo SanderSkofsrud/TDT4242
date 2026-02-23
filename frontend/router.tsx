@@ -1,10 +1,35 @@
 import { Suspense, lazy } from 'react'
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 
 import { useAuth } from './context/AuthContext'
 import { usePrivacy } from './context/PrivacyContext'
 import { ROLE_CAPABILITIES, type Capability } from './types/capabilities'
 import { LoadingSpinner } from './components/common/LoadingSpinner'
+import { NavBar } from './components/common/NavBar'
+
+function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const isHome = location.pathname === '/dashboard'
+
+  return (
+    <>
+      <NavBar />
+      {!isHome && (
+        <div className="container-app pt-3 pb-1">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="btn-secondary py-2 px-4 text-sm"
+          >
+            Back
+          </button>
+        </div>
+      )}
+      {children}
+    </>
+  )
+}
 
 // Placeholder lazy imports for Layer 6 pages.
 const Login = lazy(() => import('./pages/Login'))
@@ -35,6 +60,7 @@ const ComplianceFeedback = lazy(
 )
 const PrivacySettings = lazy(() => import('./pages/PrivacySettings'))
 const DataExport = lazy(() => import('./pages/DataExport'))
+const Profile = lazy(() => import('./pages/Profile'))
 
 interface ProtectedRouteProps {
   requiredCapability?: Capability
@@ -65,15 +91,17 @@ function ProtectedRoute({
     const userCapabilities = ROLE_CAPABILITIES[user.role] ?? []
     if (!userCapabilities.includes(requiredCapability)) {
       return (
-        <div className="container-app py-16 text-center">
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Access Denied</h2>
-          <p className="text-slate-600">You do not have permission to view this page.</p>
-        </div>
+        <AuthenticatedLayout>
+          <div className="container-app py-16 text-center">
+            <h2 className="text-2xl font-bold text-slate-900 mb-2">Access Denied</h2>
+            <p className="text-slate-600">You do not have permission to view this page.</p>
+          </div>
+        </AuthenticatedLayout>
       )
     }
   }
 
-  return children
+  return <AuthenticatedLayout>{children}</AuthenticatedLayout>
 }
 
 function PublicOnlyRoute({ children }: { children: React.ReactElement }) {
@@ -221,6 +249,15 @@ export function AppRouter() {
             element={
               <ProtectedRoute requiredCapability="data:export:own">
                 <DataExport />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
               </ProtectedRoute>
             }
           />

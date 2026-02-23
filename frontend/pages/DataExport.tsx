@@ -2,10 +2,8 @@ import { useState } from 'react'
 
 import { PrivacyBadge } from '../components/common/PrivacyBadge'
 import { exportMyData } from '../services/exportService'
-import { useAuth } from '../context/AuthContext'
 
 export default function DataExport() {
-  const { logout } = useAuth()
   const [isExporting, setIsExporting] = useState(false)
   const [success, setSuccess] = useState(false)
 
@@ -22,18 +20,9 @@ export default function DataExport() {
 
   return (
     <div className="container-app py-12 sm:py-16">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-          Data export
-        </h1>
-        <button
-          type="button"
-          onClick={logout}
-          className="btn-secondary"
-        >
-          Log out
-        </button>
-      </div>
+      <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-6">
+        Data export
+      </h1>
       <p className="text-slate-600 max-w-xl mb-6 leading-relaxed">
         Your export will include all your AI usage declarations and sharing
         preferences in JSON format.

@@ -1,13 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { useAuth } from '../context/AuthContext'
 import { usePrivacy } from '../context/PrivacyContext'
 
 export default function PrivacyNotice() {
   const navigate = useNavigate()
   const { acknowledge } = usePrivacy()
-  const { logout } = useAuth()
   const [isAcknowledging, setIsAcknowledging] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -78,26 +76,17 @@ export default function PrivacyNotice() {
           <section className="card-elevated mt-10">
             <h2 className="text-lg font-bold text-slate-900 mb-2">Your choice</h2>
             <p className="text-slate-600 text-sm mb-6">
-              You must accept to continue using the service. If you do not agree, you can log out.
+              You must accept to continue using the service. If you do not agree, use the Logout button in the navigation bar above.
             </p>
             {error && <p className="error-message mb-3">{error}</p>}
-            <div className="flex flex-wrap gap-3 items-center">
-              <button
-                type="button"
-                onClick={handleAcknowledge}
-                disabled={isAcknowledging}
-                className="btn-primary"
-              >
-                I understand and agree
-              </button>
-              <button
-                type="button"
-                onClick={() => logout()}
-                className="btn-secondary"
-              >
-                Log out instead
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={handleAcknowledge}
+              disabled={isAcknowledging}
+              className="btn-primary"
+            >
+              I understand and agree
+            </button>
           </section>
         </div>
       </div>

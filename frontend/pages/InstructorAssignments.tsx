@@ -2,10 +2,8 @@ import { Link, useParams } from 'react-router-dom'
 
 import { LoadingSpinner } from '../components/common/LoadingSpinner'
 import { useInstructorAssignments } from '../hooks/useAssignments'
-import { useAuth } from '../context/AuthContext'
 
 export default function InstructorAssignments() {
-  const { logout } = useAuth()
   const { courseId } = useParams<{ courseId: string }>()
   const { data, isLoading, error } = useInstructorAssignments(courseId ?? '')
 
@@ -33,22 +31,13 @@ export default function InstructorAssignments() {
 
   return (
     <div className="container-app py-12 sm:py-16">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-            Assignments
-          </h1>
-          <p className="text-slate-600 mt-1">
-            Manage guidance for assignments in this course.
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={logout}
-          className="btn-secondary"
-        >
-          Log out
-        </button>
+      <div className="mb-6">
+        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+          Assignments
+        </h1>
+        <p className="text-slate-600 mt-1">
+          Manage guidance for assignments in this course.
+        </p>
       </div>
 
       <div className="mb-6">
