@@ -102,7 +102,7 @@ export default function StudentDashboard() {
                     <tr key={assignment.id} className="border-b border-slate-100">
                       <td className="py-3 px-3 text-slate-700">{assignment.title}</td>
                       <td className="py-3 px-3 text-slate-700">
-                        {assignment.course.code} â€” {assignment.course.name}
+                        {assignment.course.code} - {assignment.course.name}
                       </td>
                       <td className="py-3 px-3 text-slate-700">
                         {new Date(assignment.dueDate).toLocaleDateString()}
@@ -180,7 +180,8 @@ export default function StudentDashboard() {
                   to={`/declarations/${d.id}/feedback`}
                   className="text-primary-600 font-medium hover:underline focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded"
                 >
-                  Assignment {d.assignmentId} — {d.categories.join(', ')} — {d.frequency} —{' '}
+                  {assignmentTitleById.get(d.assignmentId) ?? `Assignment ${d.assignmentId}`} -{' '}
+                  {d.categories.join(', ')} - {d.frequency} -{' '}
                   {new Date(d.submittedAt).toLocaleDateString()}
                 </Link>
               </li>
