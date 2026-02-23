@@ -12,7 +12,7 @@ SELECT
   c.name AS course_name,
   category,
   d.frequency,
-  COUNT(d.id)::int AS declaration_count
+  COUNT(d.id) AS declaration_count
 FROM declarations d
 JOIN assignments a ON a.id = d.assignment_id
 JOIN courses c ON c.id = a.course_id

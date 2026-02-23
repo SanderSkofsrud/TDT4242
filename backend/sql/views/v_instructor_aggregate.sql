@@ -8,7 +8,7 @@ SELECT
   a.course_id,
   category,
   d.frequency,
-  COUNT(d.id)::int AS declaration_count
+  COUNT(d.id) AS declaration_count
 FROM declarations d
 JOIN assignments a ON a.id = d.assignment_id
 JOIN sharing_preferences sp
