@@ -49,6 +49,7 @@ export async function runMigrations(): Promise<void> {
     '010_create_access_log.sql',
     '011_add_guidance_categories.sql',
     '012_update_sharing_defaults.sql',
+    '013_drop_v_faculty_aggregate.sql',
   ]
 
   for (const file of migrationFiles) {

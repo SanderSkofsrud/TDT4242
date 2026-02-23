@@ -247,9 +247,9 @@ export async function getFacultyDashboard(
       return
     }
 
-    const data = await getFacultyAggregateForFaculty(facultyId)
+    const rows = await getFacultyAggregateForFaculty(facultyId)
 
-    if (data.length === 0) {
+    if (rows.length === 0) {
       res.status(200).json({
         suppressed: true,
         message: 'Cohort size is below the minimum threshold for display',
@@ -263,6 +263,16 @@ export async function getFacultyDashboard(
 
       return
     }
+
+    const data = rows.map((row) => ({
+      courseId: row.course_id,
+      facultyId: row.faculty_id,
+      courseCode: row.course_code,
+      courseName: row.course_name,
+      category: row.category,
+      frequency: row.frequency,
+      declarationCount: row.declaration_count,
+    }))
 
     res.status(200).json({
       suppressed: false,

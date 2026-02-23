@@ -174,6 +174,8 @@ export interface InstructorDashboardResponse {
 export interface FacultyAggregateRow {
   courseId: string
   facultyId: string
+  courseCode: string
+  courseName: string
   category: string
   frequency: string
   declarationCount: number

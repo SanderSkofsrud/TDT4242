@@ -14,3 +14,19 @@ export async function getInstructorAssignments(
   )
   return response.data as InstructorAssignmentsResponse
 }
+
+export interface CreateAssignmentInput {
+  title: string
+  dueDate: string
+}
+
+export async function createInstructorAssignment(
+  courseId: string,
+  data: CreateAssignmentInput,
+): Promise<{ id: string; courseId: string; title: string; dueDate: string; createdAt: string }> {
+  const response = await api.post(
+    `/api/instructor/${encodeURIComponent(courseId)}/assignments`,
+    { title: data.title, dueDate: data.dueDate },
+  )
+  return response.data
+}

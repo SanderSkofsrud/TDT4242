@@ -58,6 +58,20 @@ export async function findAssignmentsForStudent(
   return result.rows
 }
 
+export async function createAssignment(
+  courseId: string,
+  title: string,
+  dueDate: Date,
+): Promise<Assignment> {
+  const result = await pool.query<Assignment>(
+    `INSERT INTO assignments (course_id, title, due_date)
+     VALUES ($1, $2, $3)
+     RETURNING *`,
+    [courseId, title, dueDate],
+  )
+  return result.rows[0]
+}
+
 export async function findAssignmentsForCourse(
   courseId: string,
 ): Promise<InstructorAssignmentRow[]> {

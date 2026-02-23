@@ -28,7 +28,7 @@ const REQUIRED_VIEWS: Array<{
   requiredSnippet: string
 }> = [
   { viewName: 'v_instructor_aggregate', requiredSnippet: 'sharing_preferences' },
-  { viewName: 'v_faculty_aggregate', requiredSnippet: 'sharing_preferences' },
+  { viewName: 'v_faculty_aggregate', requiredSnippet: 'course_code' },
 ]
 
 const MAX_RETRIES = 10

@@ -11,6 +11,8 @@ export interface InstructorAggregateRow {
 export interface FacultyAggregateRow {
   course_id: string
   faculty_id: string
+  course_code: string
+  course_name: string
   category: string
   frequency: string
   declaration_count: number
@@ -39,6 +41,8 @@ export async function getFacultyAggregateForFaculty(
   const result = await pool.query<FacultyAggregateRow>(
     `SELECT course_id,
             faculty_id,
+            course_code,
+            course_name,
             category,
             frequency,
             declaration_count

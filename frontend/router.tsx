@@ -122,12 +122,12 @@ function DashboardByRole() {
     return <InstructorDashboardHome />
   }
   if (user.role === 'head_of_faculty') {
+    // Redirect head of faculty to the faculty dashboard route with the demo faculty ID.
     return (
-      <div className="container-app py-12 sm:py-16">
-        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-4">Dashboard</h1>
-        <p className="text-slate-600 mb-2">You are logged in as head of faculty. To view faculty aggregate data, go to:</p>
-        <code className="block p-3 bg-slate-100 rounded-lg text-sm text-slate-800">/dashboard/faculty?facultyId=YOUR_FACULTY_ID</code>
-      </div>
+      <Navigate
+        to="/dashboard/faculty?facultyId=11111111-1111-1111-1111-111111111111"
+        replace
+      />
     )
   }
   return (

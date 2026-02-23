@@ -4,6 +4,7 @@ import { CAPABILITIES } from '../config/capabilities.js'
 import {
   findAssignmentsForStudent,
   findAssignmentsForCourse,
+  createAssignment as createAssignmentModel,
 } from '../models/assignment.js'
 import { isUserInstructorInCourse } from '../models/enrolment.js'
 import { logAccess } from '../models/accessLog.js'
@@ -101,6 +102,60 @@ export async function getInstructorAssignmentsForCourse(
     if (process.env.NODE_ENV === 'development') {
       // eslint-disable-next-line no-console
       console.error('getInstructorAssignmentsForCourse error:', error)
+    }
+    res.status(500).json(INTERNAL_ERROR_BODY)
+  }
+}
+
+export async function createAssignmentForCourse(
+  req: Request,
+  res: Response,
+  _next: NextFunction,
+): Promise<void> {
+  const courseId = req.params.courseId as string
+
+  try {
+    const userId = req.user?.id
+    if (!userId) {
+      res.status(500).json(INTERNAL_ERROR_BODY)
+      return
+    }
+
+    const isInstructor = await isUserInstructorInCourse(userId, courseId)
+    if (!isInstructor) {
+      res.status(403).json({ error: 'You are not an instructor for this course' })
+      return
+    }
+
+    const { title, dueDate } = req.body as { title: string; dueDate: Date }
+    if (!title || !dueDate) {
+      res.status(400).json({ error: 'title and dueDate are required' })
+      return
+    }
+
+    const assignment = await createAssignmentModel(
+      courseId,
+      title.trim(),
+      new Date(dueDate),
+    )
+
+    res.status(201).json({
+      id: assignment.id,
+      courseId: assignment.course_id,
+      title: assignment.title,
+      dueDate: assignment.due_date,
+      createdAt: assignment.created_at,
+    })
+
+    void logAccess(
+      userId,
+      CAPABILITIES['assignment:write:course'],
+      assignment.id,
+    ).catch(() => {})
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
+      console.error('createAssignmentForCourse error:', error)
     }
     res.status(500).json(INTERNAL_ERROR_BODY)
   }

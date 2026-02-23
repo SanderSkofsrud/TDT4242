@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import type { StudentAssignmentsResponse, InstructorAssignmentsResponse } from '../types/models'
 import { getStudentAssignments, getInstructorAssignments } from '../services/assignmentService'
@@ -39,29 +39,23 @@ export function useInstructorAssignments(courseId: string) {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
-  useEffect(() => {
+  const refetch = useCallback(async () => {
     if (!courseId) return
-    let cancelled = false
-    ;(async () => {
-      try {
-        const resp = await getInstructorAssignments(courseId)
-        if (!cancelled) {
-          setData(resp)
-        }
-      } catch (err) {
-        if (!cancelled) {
-          setError(err as Error)
-        }
-      } finally {
-        if (!cancelled) {
-          setIsLoading(false)
-        }
-      }
-    })()
-    return () => {
-      cancelled = true
+    setIsLoading(true)
+    setError(null)
+    try {
+      const resp = await getInstructorAssignments(courseId)
+      setData(resp)
+    } catch (err) {
+      setError(err as Error)
+    } finally {
+      setIsLoading(false)
     }
   }, [courseId])
 
-  return { data, isLoading, error }
+  useEffect(() => {
+    refetch()
+  }, [refetch])
+
+  return { data, isLoading, error, refetch }
 }
