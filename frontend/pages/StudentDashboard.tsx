@@ -10,10 +10,8 @@ import { MonthlyBreakdownTable } from '../components/dashboard/MonthlyBreakdownT
 import { CategoryTrendChart } from '../components/dashboard/CategoryTrendChart'
 import { useStudentDashboard } from '../hooks/useDashboard'
 import { useStudentAssignments } from '../hooks/useAssignments'
-import { useAuth } from '../context/AuthContext'
 
 export default function StudentDashboard() {
-  const { logout } = useAuth()
   const { data, isLoading, error } = useStudentDashboard()
   const {
     data: assignmentsData,
@@ -59,18 +57,9 @@ export default function StudentDashboard() {
 
   return (
     <div className="container-app py-12 sm:py-16">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-          My dashboard
-        </h1>
-        <button
-          type="button"
-          onClick={logout}
-          className="btn-secondary"
-        >
-          Log out
-        </button>
-      </div>
+      <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-8">
+        My dashboard
+      </h1>
 
       <section className="card-elevated mb-8">
         <h2 className="text-xl font-bold text-slate-900 mb-4">Assignments</h2>
