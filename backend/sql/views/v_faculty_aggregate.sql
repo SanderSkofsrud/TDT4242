@@ -12,6 +12,10 @@ SELECT
 FROM declarations d
 JOIN assignments a ON a.id = d.assignment_id
 JOIN courses c ON c.id = a.course_id
+JOIN sharing_preferences sp
+  ON sp.student_id = d.student_id
+ AND sp.course_id = a.course_id
+ AND sp.is_shared = TRUE
 CROSS JOIN LATERAL unnest(d.categories) AS category
 WHERE d.expires_at > now()
 GROUP BY

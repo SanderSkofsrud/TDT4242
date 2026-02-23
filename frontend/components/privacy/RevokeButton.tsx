@@ -23,7 +23,7 @@ export function RevokeButton({ onRevoke }: RevokeButtonProps) {
       <ConfirmDialog
         isOpen={open}
         title="Revoke access"
-        message="Revoking access means your instructor will no longer be able to see your declarations for this course. You can reinstate access at any time."
+        message="Revoking access means your instructor will no longer be able to see your declarations for this course. You can share access again at any time."
         confirmLabel="Revoke Access"
         cancelLabel="Cancel"
         onConfirm={handleConfirm}

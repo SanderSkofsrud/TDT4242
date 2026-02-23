@@ -23,6 +23,14 @@ const REQUIRED_COLUMNS: Array<{
   { table: 'assignment_guidance', column: 'prohibited_categories' },
 ]
 
+const REQUIRED_VIEWS: Array<{
+  viewName: string
+  requiredSnippet: string
+}> = [
+  { viewName: 'v_instructor_aggregate', requiredSnippet: 'sharing_preferences' },
+  { viewName: 'v_faculty_aggregate', requiredSnippet: 'sharing_preferences' },
+]
+
 const MAX_RETRIES = 10
 const RETRY_DELAY_MS = 3000
 
@@ -65,14 +73,39 @@ async function getMissingColumns(): Promise<Array<{ table: string; column: strin
   )
 }
 
+async function getMissingViews(): Promise<Array<{ viewName: string; requiredSnippet: string }>> {
+  if (REQUIRED_VIEWS.length === 0) return []
+
+  const viewNames = REQUIRED_VIEWS.map((item) => item.viewName)
+  const result = await pool.query<{ viewname: string; definition: string }>(
+    `
+    SELECT viewname, definition
+    FROM pg_views
+    WHERE schemaname = 'public' AND viewname = ANY($1::text[])
+  `,
+    [viewNames],
+  )
+
+  const definitionByView = new Map(
+    result.rows.map((row) => [row.viewname, row.definition]),
+  )
+
+  return REQUIRED_VIEWS.filter((item) => {
+    const definition = definitionByView.get(item.viewName)
+    if (!definition) return true
+    return !definition.includes(item.requiredSnippet)
+  })
+}
+
 async function checkWithRetry(): Promise<string[]> {
   let lastError: unknown = null
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt += 1) {
     try {
-      const [missingTables, missingColumns] = await Promise.all([
+      const [missingTables, missingColumns, missingViews] = await Promise.all([
         getMissingTables(),
         getMissingColumns(),
+        getMissingViews(),
       ])
 
       if (missingColumns.length > 0) {
@@ -83,7 +116,15 @@ async function checkWithRetry(): Promise<string[]> {
         console.log(`[schema] Missing columns detected: ${details}`)
       }
 
-      return missingTables.length > 0 || missingColumns.length > 0
+      if (missingViews.length > 0) {
+        const details = missingViews
+          .map((item) => item.viewName)
+          .join(', ')
+        // eslint-disable-next-line no-console
+        console.log(`[schema] Outdated views detected: ${details}`)
+      }
+
+      return missingTables.length > 0 || missingColumns.length > 0 || missingViews.length > 0
         ? ['schema_update_required']
         : []
     } catch (error) {

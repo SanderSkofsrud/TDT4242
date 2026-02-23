@@ -79,6 +79,8 @@ export interface FeedbackTemplate {
 export interface SharingPreference {
   studentId: string
   courseId: string
+  courseCode: string
+  courseName: string
   isShared: boolean
   updatedAt: string
 }

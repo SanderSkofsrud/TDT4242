@@ -36,7 +36,9 @@ export function SharingStatus({
             <tbody>
               {preferences.map((pref) => (
                 <tr key={pref.courseId} className="border-b border-slate-100">
-                  <td className="py-3 px-3 text-slate-700">{pref.courseId}</td>
+                  <td className="py-3 px-3 text-slate-700">
+                    {pref.courseCode} — {pref.courseName}
+                  </td>
                   <td className="py-3 px-3 text-slate-700">
                     {pref.isShared ? 'Shared' : 'Private'}
                   </td>
@@ -52,7 +54,7 @@ export function SharingStatus({
                         onClick={() => onReinstate(pref.courseId)}
                         className="btn-secondary"
                       >
-                        Reinstate Access
+                        Share Access
                       </button>
                     )}
                   </td>

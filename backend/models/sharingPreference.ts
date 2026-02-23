@@ -1,6 +1,11 @@
 import { pool } from '../config/database.js'
 import type { SharingPreference } from '../types/models.js'
 
+export interface SharingPreferenceWithCourse extends SharingPreference {
+  course_code: string
+  course_name: string
+}
+
 export async function createSharingPreference(
   studentId: string,
   courseId: string,
@@ -59,10 +64,15 @@ export async function reinstateSharing(
 
 export async function getSharingPreferencesForStudent(
   studentId: string,
-): Promise<SharingPreference[]> {
-  const result = await pool.query<SharingPreference>(
-    `SELECT * FROM sharing_preferences
-     WHERE student_id = $1`,
+): Promise<SharingPreferenceWithCourse[]> {
+  const result = await pool.query<SharingPreferenceWithCourse>(
+    `SELECT sp.*,
+            c.code AS course_code,
+            c.name AS course_name
+     FROM sharing_preferences sp
+     INNER JOIN courses c ON c.id = sp.course_id
+     WHERE sp.student_id = $1
+     ORDER BY c.code`,
     [studentId],
   )
   return result.rows

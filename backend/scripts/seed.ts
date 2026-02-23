@@ -163,8 +163,8 @@ export async function runSeedData(): Promise<void> {
 
     for (const studentId of declarationStudents) {
       await client.query(
-        `INSERT INTO sharing_preferences (student_id, course_id, is_shared)
-         VALUES ($1, $2, TRUE)
+      `INSERT INTO sharing_preferences (student_id, course_id, is_shared)
+         VALUES ($1, $2, FALSE)
          ON CONFLICT (student_id, course_id) DO NOTHING`,
         [studentId, IDS.course],
       )

@@ -187,6 +187,8 @@ npm run dev:frontend
 - `POST /api/sharing/revoke/:courseId`
 - `POST /api/sharing/reinstate/:courseId`
 
+Sharing is now private by default. Students must explicitly share access per course.
+
 ### Feedback & Policy
 
 - `GET /api/declarations/:declarationId/feedback`

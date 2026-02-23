@@ -48,6 +48,7 @@ export async function runMigrations(): Promise<void> {
     '009_create_sharing_preferences.sql',
     '010_create_access_log.sql',
     '011_add_guidance_categories.sql',
+    '012_update_sharing_defaults.sql',
   ]
 
   for (const file of migrationFiles) {
