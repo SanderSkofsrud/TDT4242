@@ -5,7 +5,13 @@ export const declarationValidator = [
     .exists({ checkFalsy: true })
     .withMessage('assignmentId is required')
     .bail()
-    .isUUID()
+    .custom((value: unknown) => {
+      if (typeof value !== 'string') return false
+      // Accept any well-formed UUID-like value (demo IDs included), without enforcing version.
+      return /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(
+        value,
+      )
+    })
     .withMessage('assignmentId must be a valid UUID'),
 
   body('toolsUsed')

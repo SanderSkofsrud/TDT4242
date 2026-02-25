@@ -74,12 +74,14 @@ export default function DeclarationSubmit() {
 
   const handleConfirmSubmit = async () => {
     try {
+      const trimmedContext = contextText.trim()
       const declaration = await submit({
         assignmentId,
         toolsUsed,
         categories: categories as Declaration['categories'],
         frequency: frequency as Declaration['frequency'],
-        contextText: contextText.trim() || null,
+        // Omit contextText when empty so backend optional() validator passes.
+        contextText: trimmedContext === '' ? undefined : trimmedContext,
       })
       if (declaration) {
         navigate(`/declarations/${declaration.id}/feedback`)
