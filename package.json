@@ -11,6 +11,7 @@
     "start:backend": "npm run start --prefix backend",
     "lint": "npm run lint --prefix frontend && npm run lint --prefix backend",
     "test": "node scripts/run-tests.cjs",
-    "test:coverage": "node scripts/run-tests.cjs --coverage"
+    "test:coverage": "node scripts/run-tests.cjs --coverage",
+    "coverage:report": "node scripts/generate-coverage-report.cjs"
   }
 }
