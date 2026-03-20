@@ -7,6 +7,8 @@
     "build": "tsc",
     "dev": "npx ts-node-dev --respawn --transpile-only server.ts",
     "start": "node dist/server.js",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "type-check": "npx tsc --noEmit",
     "lint": "eslint . --ext .ts --max-warnings 0",
     "migrate": "npx tsc && node dist/scripts/migrate.js",
@@ -31,9 +33,11 @@
     "@types/express": "^5.0.0",
     "@types/node": "^22.9.0",
     "@types/pg": "^8.16.0",
+    "@vitest/coverage-v8": "^3.2.4",
     "eslint": "^9.13.0",
     "globals": "^15.11.0",
     "tsx": "^4.19.2",
+    "vitest": "^3.2.4",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.11.0"
   }

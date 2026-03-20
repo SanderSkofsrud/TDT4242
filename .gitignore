@@ -28,9 +28,6 @@ postgres-data/
 # Backend runtime — uploaded policy PDFs (directory preserved via .gitkeep)
 backend/uploads/
 
-# Test coverage
-coverage/
-
 # Logs
 *.log
 npm-debug.log*
